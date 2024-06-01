@@ -922,6 +922,7 @@ maintext += gotowyOpis;
 
 
     else if (window.location.href.includes('https://www.aeg.pl')) {
+        console.log('START');
         const daneDoWyciagniecia = {
             cena: '',
             ean: '',
@@ -952,14 +953,14 @@ maintext += gotowyOpis;
         // Przewijanie do elementu
         const targetElement = document.querySelector('.product-description');
         targetElement.scrollIntoView({ behavior: 'smooth' });
-        
+        console.log('SCROLL');
         // Poczekaj, aż element stanie się widoczny
         await new Promise(resolve => setTimeout(resolve, 1000));
         
         // Kliknięcie przycisku
         const buttonToClick = document.querySelector('.tech-specs__tab.swiper-slide:nth-of-type(4) button');
         buttonToClick.click();
-        
+        console.log('CLICK');
         // Poczekaj na załadowanie danych
         await new Promise(resolve => setTimeout(resolve, 2000));
         
