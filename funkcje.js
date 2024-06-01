@@ -1217,7 +1217,6 @@ async function downloadImages(nazwaZdjec) {
     }
 }
 
-downloadImages('test');
 // Funkcja do zapisu danych do pliku txt
 function zapisOpisuDoPliku(trescOpisu) {
     const tekst = trescOpisu.join("\n\n");
