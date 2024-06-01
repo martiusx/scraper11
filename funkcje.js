@@ -300,10 +300,17 @@ async function opis(coChceszWyciagnac) {
         
         
         gotowyOpis += daneDoWyciagniecia.tytul + '\n\n';
-        gotowyOpis += daneDoWyciagniecia.cena + '\n';
-        gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
-        gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
-        gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
+        if(coChceszWyciagnac.cena === 1){
+            gotowyOpis += daneDoWyciagniecia.cena + '\n';
+        }
+        if(coChceszWyciagnac.ean === 1){
+            gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
+        }
+        if(coChceszWyciagnac.opis === 1){
+            gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
+            gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
+        }
+       
         if (ostrzezenia != '') {
             gotowyOpis += 'UWAGA!!!!' + '\n';
             gotowyOpis += ostrzezenia + '\n';
@@ -435,10 +442,17 @@ async function opis(coChceszWyciagnac) {
         
         
         gotowyOpis += daneDoWyciagniecia.tytul + '\n\n';
-        gotowyOpis += daneDoWyciagniecia.cena + '\n';
-        gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
-        gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
-        gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
+        if(coChceszWyciagnac.cena === 1){
+            gotowyOpis += daneDoWyciagniecia.cena + '\n';
+        }
+        if(coChceszWyciagnac.ean === 1){
+            gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
+        }
+        if(coChceszWyciagnac.opis === 1){
+            gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
+            gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
+        }
+       
         if (ostrzezenia != '') {
             gotowyOpis += 'UWAGA!!!!' + '\n';
             gotowyOpis += ostrzezenia + '\n';
@@ -598,10 +612,17 @@ async function opis(coChceszWyciagnac) {
         
         
         gotowyOpis += daneDoWyciagniecia.tytul + '\n\n';
-        gotowyOpis += daneDoWyciagniecia.cena + '\n';
-        gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
-        gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
-        gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
+        if(coChceszWyciagnac.cena === 1){
+            gotowyOpis += daneDoWyciagniecia.cena + '\n';
+        }
+        if(coChceszWyciagnac.ean === 1){
+            gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
+        }
+        if(coChceszWyciagnac.opis === 1){
+            gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
+            gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
+        }
+       
         if (ostrzezenia != '') {
             gotowyOpis += 'UWAGA!!!!' + '\n';
             gotowyOpis += ostrzezenia + '\n';
@@ -701,10 +722,17 @@ async function opis(coChceszWyciagnac) {
         //TWORZENIE GOTOWEGO OPISU
         
         gotowyOpis += daneDoWyciagniecia.tytul + '\n\n';
-        gotowyOpis += daneDoWyciagniecia.cena + '\n';
-        gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
-        gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
-        gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
+        if(coChceszWyciagnac.cena === 1){
+            gotowyOpis += daneDoWyciagniecia.cena + '\n';
+        }
+        if(coChceszWyciagnac.ean === 1){
+            gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
+        }
+        if(coChceszWyciagnac.opis === 1){
+            gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
+            gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
+        }
+       
         if (ostrzezenia != '') {
             gotowyOpis += 'UWAGA!!!!' + '\n';
             gotowyOpis += ostrzezenia + '\n';
@@ -869,14 +897,21 @@ if(opisListaZDanymiSelektor1Wiersza != ''){
 
 
 gotowyOpis += daneDoWyciagniecia.tytul + '\n\n';
-gotowyOpis += daneDoWyciagniecia.cena + '\n';
-gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
-gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
-gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
-if (ostrzezenia != '') {
-    gotowyOpis += 'UWAGA!!!!' + '\n';
-    gotowyOpis += ostrzezenia + '\n';
-}
+        if(coChceszWyciagnac.cena === 1){
+            gotowyOpis += daneDoWyciagniecia.cena + '\n';
+        }
+        if(coChceszWyciagnac.ean === 1){
+            gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
+        }
+        if(coChceszWyciagnac.opis === 1){
+            gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
+            gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
+        }
+       
+        if (ostrzezenia != '') {
+            gotowyOpis += 'UWAGA!!!!' + '\n';
+            gotowyOpis += ostrzezenia + '\n';
+        }
 nazwaPoFormacie = daneDoWyciagniecia.tytul.replace(/ /g, "-").toLowerCase();
         nazwaPoFormacie = nazwaPoFormacie.split('.').join('');
 maintext += gotowyOpis;
@@ -1003,12 +1038,19 @@ maintext += gotowyOpis;
         
         // Tworzenie gotowego opisu
         gotowyOpis += daneDoWyciagniecia.tytul + '\n\n';
-        gotowyOpis += daneDoWyciagniecia.cena + '\n';
-        gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
-        gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
-        gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
+        if(coChceszWyciagnac.cena === 1){
+            gotowyOpis += daneDoWyciagniecia.cena + '\n';
+        }
+        if(coChceszWyciagnac.ean === 1){
+            gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
+        }
+        if(coChceszWyciagnac.opis === 1){
+            gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
+            gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
+        }
+       
         if (ostrzezenia != '') {
-            gotowyOpis += 'UWAGA!!!!\n';
+            gotowyOpis += 'UWAGA!!!!' + '\n';
             gotowyOpis += ostrzezenia + '\n';
         }
         nazwaPoFormacie = daneDoWyciagniecia.tytul.replace(/ /g, "-").toLowerCase();
@@ -1124,14 +1166,21 @@ if(opisListaZDanymiSelektor1Wiersza != ''){
 //TWORZENIE GOTOWEGO OPISU
 
 gotowyOpis += daneDoWyciagniecia.tytul + '\n\n';
-gotowyOpis += daneDoWyciagniecia.cena + '\n';
-gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
-gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
-gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
-if (ostrzezenia != '') {
-    gotowyOpis += 'UWAGA!!!!' + '\n';
-    gotowyOpis += ostrzezenia + '\n';
-}
+        if(coChceszWyciagnac.cena === 1){
+            gotowyOpis += daneDoWyciagniecia.cena + '\n';
+        }
+        if(coChceszWyciagnac.ean === 1){
+            gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
+        }
+        if(coChceszWyciagnac.opis === 1){
+            gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
+            gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
+        }
+       
+        if (ostrzezenia != '') {
+            gotowyOpis += 'UWAGA!!!!' + '\n';
+            gotowyOpis += ostrzezenia + '\n';
+        }
 nazwaPoFormacie = daneDoWyciagniecia.tytul.replace(/ /g, "-").toLowerCase();
         nazwaPoFormacie = nazwaPoFormacie.split('.').join('');
 maintext += gotowyOpis;
