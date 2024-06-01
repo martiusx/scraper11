@@ -958,7 +958,7 @@ maintext += gotowyOpis;
         await new Promise(resolve => setTimeout(resolve, 1000));
         
         // Kliknięcie przycisku
-        const buttonToClick = document.querySelector('.tech-specs__tab.swiper-slide:nth-of-type(4) button');
+        const buttonToClick = document.querySelector('.tech-specs__tab.swiper-slide button.tech-specs__tab-link[data-tech-spec="5"]');
         buttonToClick.click();
         console.log('CLICK');
         // Poczekaj na załadowanie danych
