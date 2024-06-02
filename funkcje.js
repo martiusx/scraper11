@@ -1187,6 +1187,494 @@ nazwaPoFormacie = daneDoWyciagniecia.tytul.replace(/ /g, "-").toLowerCase();
 maintext += gotowyOpis;
 
     }
+    
+    
+    ///DO ZROBIENIA
+    
+    
+    else if (window.location.href.includes('https://www.falmec.com/')) {
+        const daneDoWyciagniecia = {
+            cena: '',
+            ean: '',
+            tytul: '',
+            opisTekstowy: '',
+            opisListaZDanymi: ''
+        };
+        let typ = '';
+        let model = '';
+        let gotowyOpis = '';
+        
+        //Dane to uzupełnienia
+        let cenaSelektor = '';
+        let eanSelektor = '';
+        let eanSelektorScriptJson = '';
+        let marka = 'Falmec';
+        let modelSelektor = '.p-product .o-article-data h4';
+        let typSelektor = '.m-breadcrumbs .m-breadcrumbs__ol li:nth-last-of-type(2) a';
+        let opisTekstowySelektorBezListy = '';
+        let opisTekstowySelektorzLista = '';
+        let opisTekstowySelektorzListaNaglowek = '';
+        let opisTekstowySelektorzListaWartosc = '';
+        
+        let ostrzezenia = 'PRODUKT Z WARIANTAMI';
+        let opisListaZDanymiSelektor1Wiersza = '.o-article-data .o-article-data__group';    
+        let opisListaZDanymiSelektor1Naglowka = ' .o-article-data__area-label';
+        let opisListaZDanymiSelektor1Wartosci = '.o-article-data__li';
+        
+        //wyciąganie EANU ze skryptu json
+        if(eanSelektorScriptJson != ''){
+            let scriptElement = document.querySelector(eanSelektorScriptJson);
+            let productData = JSON.parse(scriptElement.textContent);
+            daneDoWyciagniecia.ean = productData.gtin;
+        }
+        //wyciąganie Eanu
+        if(eanSelektor != '' && eanSelektorScriptJson == ''){
+            if(document.querySelectorAll(eanSelektor).length>0){
+                daneDoWyciagniecia.ean = document.querySelector(eanSelektor).innerText;
+            }else{
+                daneDoWyciagniecia.ean = 'BRAK WYCIĄGNIĘTEGO EANU';
+            }
+        }else if(eanSelektorScriptJson == ''){
+            daneDoWyciagniecia.ean = 'BRAK WYCIĄGNIĘTEGO EANU';
+        }
+        
+        //wyciąganie ceny
+        if(cenaSelektor != ''){
+            if(document.querySelectorAll(cenaSelector).length > 0){
+                daneDoWyciagniecia.cena = document.querySelector(cenaSelector).innerText;
+            }else{
+                daneDoWyciagniecia.cena = 'BRAK WYCIĄGNIĘTEJ CENY';
+            }
+        }else{
+            daneDoWyciagniecia.cena = 'BRAK WYCIĄGNIĘTEJ CENY';
+        }
+        //tworzenie tutułu
+        if(typSelektor != ''){
+            if(document.querySelectorAll(typSelektor).length >0){
+                typ = document.querySelector(typSelektor).innerText;
+
+                if(typ == 'Okapy'){
+                    typ = 'Okap';
+                }
+                else if(typ == 'Systemy zintegrowane i płyty indukcyjne'){
+                    typ = 'Płyta indukcyjna';
+                }
+                else if(typ == 'Water'){
+                    typ = 'Zlewozmywak';
+                }
+            }
+        }
+        if(modelSelektor != ''){
+            if(document.querySelectorAll(modelSelektor).length >0){
+                model = document.querySelector(modelSelektor).innerText;
+            }
+        }
+        
+        //nazwaProduktu
+        daneDoWyciagniecia.tytul = '<h3>'+typ + ' ' + marka + ' ' + model + ' ' + '[TU WPISZ SKU]</h3>';
+        
+        
+        //wyciąganie opisu tekstowego
+        if(opisTekstowySelektorBezListy != ''){
+            if(document.querySelectorAll(opisTekstowySelektorBezListy).length > 0){
+                daneDoWyciagniecia.opisTekstowy = '<p>'+ document.querySelector(opisTekstowySelektorBezListy).innerText + '</p>';
+            }
+        }
+        
+        //wyciąganie opisu tekstowego z listy
+        if(opisTekstowySelektorzLista != ''){
+            if(document.querySelectorAll(opisTekstowySelektorzLista).length > 0){
+                document.querySelectorAll(opisTekstowySelektorzLista).forEach((el)=>{
+                    let napisNaglowek = '';
+                    let napisWartosc = '';
+                    if(el.querySelectorAll(opisTekstowySelektorzListaNaglowek).length > 0){
+                         napisNaglowek = el.querySelector(opisTekstowySelektorzListaNaglowek).innerText;
+                    }
+                    if(el.querySelectorAll(opisTekstowySelektorzListaWartosc).length > 0){
+                         napisWartosc = el.querySelector(opisTekstowySelektorzListaWartosc).innerText;
+                    }
+                    daneDoWyciagniecia.opisTekstowy += '<p>' + '<h5>'+napisNaglowek+ '</h5><br>'+ napisWartosc +'<br>' + '</p>';
+                })
+            }
+        }
+        
+        //wyciąganie opisu z listą danych technicznych
+        if(opisListaZDanymiSelektor1Wiersza != ''){
+            if(document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).length > 0){
+                document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).forEach((el)=>{
+                    if(el.querySelector(opisListaZDanymiSelektor1Naglowka).innerText.toLowerCase() == 'dane techniczne' || el.querySelector(opisListaZDanymiSelektor1Naglowka).innerText.toLowerCase() == 'zużycie i podłączanie'){
+                        daneDoWyciagniecia.opisListaZDanymi += '<h3>'+ el.querySelector(opisListaZDanymiSelektor1Naglowka).innerText +'</h3>'
+                        daneDoWyciagniecia.opisListaZDanymi += '<table style="width:100%;"><tbody style="width:100%;">';
+                        
+                        let tt = el.querySelectorAll('.o-article-data__data-title');
+                        
+                        tt.forEach((el2)=>{
+                            if(el2.innerText.toLowerCase() == 'dane ogólne'){
+                                
+                                let t = el2.parentNode.querySelectorAll('.o-article-data__data-value');
+                                
+                                daneDoWyciagniecia.opisListaZDanymi += '<tr><td style="font-weight:600;vertical-align: top;padding-bottom: 6px;">' + el2.innerText + '</td><td style="padding-bottom:6px;">';
+
+                                t.forEach((el3)=>{
+                                    if(el3.innerText != ''){
+                                        daneDoWyciagniecia.opisListaZDanymi += '<ul><li style="padding-bottom:6px;">' + el3.innerText + '</li></ul>';
+                                    }
+                                })
+                                daneDoWyciagniecia.opisListaZDanymi += '</td></tr>';
+                            }else{
+                                let t = el2.parentNode.querySelector('.o-article-data__data-value');
+                            
+                                if (tt != '' && t != '') {
+                                    daneDoWyciagniecia.opisListaZDanymi += '<tr><td style="font-weight:600;vertical-align: top;padding-bottom: 6px;">' + el2.innerText + '</td><td style="padding-bottom:6px;">' + t.innerText + '</td></tr>';
+                                }
+                            }
+                            
+                        })
+                        
+                        daneDoWyciagniecia.opisListaZDanymi += '</table></tbody>';
+                    }
+                })
+            }
+        }
+        
+        
+        
+        //TWORZENIE GOTOWEGO OPISU
+        
+        
+        
+        gotowyOpis += daneDoWyciagniecia.tytul + '\n\n';
+        if(coChceszWyciagnac.cena === 1){
+            gotowyOpis += daneDoWyciagniecia.cena + '\n';
+        }
+        if(coChceszWyciagnac.ean === 1){
+            gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
+        }
+        if(coChceszWyciagnac.opis === 1){
+            gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
+            gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
+        }
+       
+        if (ostrzezenia != '') {
+            gotowyOpis += 'UWAGA!!!!' + '\n';
+            gotowyOpis += ostrzezenia + '\n';
+        }
+        nazwaPoFormacie = daneDoWyciagniecia.tytul.replace(/ /g, "-").toLowerCase();
+        nazwaPoFormacie = nazwaPoFormacie.split('.').join('');
+        maintext += gotowyOpis;
+    } 
+
+
+    else if (window.location.href.includes('https://www.fulgor-milano.com/')) {
+        const daneDoWyciagniecia = {
+            cena: '',
+            ean: '',
+            tytul: '',
+            opisTekstowy: '',
+            opisListaZDanymi: ''
+        };
+        let typ = '';
+        let model = '';
+        let gotowyOpis = '';
+        
+        //Dane to uzupełnienia
+        let cenaSelektor = '';
+        let eanSelektor = '.desktop-title .field.field--name-field-product-code-ean .field__item';
+        let eanSelektorScriptJson = '';
+        let marka = 'Fulgor';
+        let modelSelektor = '.container-fluid .product-media-left h2 .field.field--name-title.field--type-string font font';
+        let typSelektor = '';
+        let opisTekstowySelektorBezListy = '.desktop-body .clearfix.text-formatted.field.field--name-body.field--type-text-with-summary.field--label-hidden.field__item p';
+        let opisTekstowySelektorzLista = '.container-fluid .paragraph.paragraph--type--title-text.paragraph--type--title-text-default.paragraph--view-mode--default';
+        let opisTekstowySelektorzListaNaglowek = '.field--name-field-title font font';
+        let opisTekstowySelektorzListaWartosc = '.field--name-field-text';
+        
+        let ostrzezenia = 'OPISY SĄ PO ANGIELSKU';
+        let opisListaZDanymiSelektor1Wiersza = '';    
+        let opisListaZDanymiSelektor1Naglowka = '';
+        let opisListaZDanymiSelektor1Wartosci = '';
+        
+        //wyciąganie EANU ze skryptu json
+        if(eanSelektorScriptJson != ''){
+            let scriptElement = document.querySelector(eanSelektorScriptJson);
+            let productData = JSON.parse(scriptElement.textContent);
+            daneDoWyciagniecia.ean = productData.gtin;
+        }
+        //wyciąganie Eanu
+        if(eanSelektor != '' && eanSelektorScriptJson == ''){
+            if(document.querySelectorAll(eanSelektor).length>0){
+                daneDoWyciagniecia.ean = document.querySelector(eanSelektor).innerText;
+            }else{
+                daneDoWyciagniecia.ean = 'BRAK WYCIĄGNIĘTEGO EANU';
+            }
+        }else if(eanSelektorScriptJson == ''){
+            daneDoWyciagniecia.ean = 'BRAK WYCIĄGNIĘTEGO EANU';
+        }
+        
+        //wyciąganie ceny
+        if(cenaSelektor != ''){
+            if(document.querySelectorAll(cenaSelector).length > 0){
+                daneDoWyciagniecia.cena = document.querySelector(cenaSelector).innerText;
+            }else{
+                daneDoWyciagniecia.cena = 'BRAK WYCIĄGNIĘTEJ CENY';
+            }
+        }else{
+            daneDoWyciagniecia.cena = 'BRAK WYCIĄGNIĘTEJ CENY';
+        }
+        //tworzenie tutułu
+        if(typSelektor != ''){
+            if(document.querySelectorAll(typSelektor).length >0){
+                typ = document.querySelector(typSelektor).innerText;
+            }
+        }
+        if(modelSelektor != ''){
+            if(document.querySelectorAll(modelSelektor).length >0){
+                model = document.querySelector(modelSelektor).innerText;
+            }
+        }
+        
+        //nazwaProduktu
+        daneDoWyciagniecia.tytul = '<h3>'+typ + ' ' + marka + ' ' + model + ' ' + '[TU WPISZ SKU]</h3>';
+        
+        
+        //wyciąganie opisu tekstowego
+        if(opisTekstowySelektorBezListy != ''){
+            if(document.querySelectorAll(opisTekstowySelektorBezListy).length > 0){
+                daneDoWyciagniecia.opisTekstowy = '<p>'+ document.querySelector(opisTekstowySelektorBezListy).innerText + '</p>';
+            }
+        }
+        
+        //wyciąganie opisu tekstowego z listy
+        if(opisTekstowySelektorzLista != ''){
+            if(document.querySelectorAll(opisTekstowySelektorzLista).length > 0){
+                document.querySelectorAll(opisTekstowySelektorzLista).forEach((el)=>{
+                    let napisNaglowek = '';
+                    let napisWartosc = '';
+                    if(el.querySelectorAll(opisTekstowySelektorzListaNaglowek).length > 0){
+                         napisNaglowek = el.querySelector(opisTekstowySelektorzListaNaglowek).innerText;
+                    }
+                    if(el.querySelectorAll(opisTekstowySelektorzListaWartosc).length > 0){
+                         napisWartosc = el.querySelector(opisTekstowySelektorzListaWartosc).innerText;
+                    }
+                    daneDoWyciagniecia.opisTekstowy += '<p>' + '<h5>'+napisNaglowek+ '</h5><br>'+ napisWartosc +'<br>' + '</p>';
+                })
+            }
+        }
+        
+        //wyciąganie opisu z listą danych technicznych
+        if(opisListaZDanymiSelektor1Wiersza != ''){
+            if(document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).length > 0){
+                daneDoWyciagniecia.opisListaZDanymi += '<table style="width:100%;"><tbody style="width:100%;">';
+                document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).forEach((el)=>{
+                    let napisOrg1 = el.querySelector(opisListaZDanymiSelektor1Naglowka).innerText;
+                    let napisOrg2 = el.querySelector(opisListaZDanymiSelektor1Wartosci).innerText;
+                
+                    let napisFormatowany1 = napisOrg1.charAt(0).toUpperCase() + napisOrg1.slice(1).toLowerCase();
+                    let napisFormatowany2 = napisOrg2.charAt(0).toUpperCase() + napisOrg2.slice(1).toLowerCase();
+        
+                
+                    if(napisFormatowany1 != "" && napisFormatowany2 != ""){
+                        daneDoWyciagniecia.opisListaZDanymi += '<tr><td>'+napisFormatowany1+ '</td><td style="font-weight: 600;">' +napisFormatowany2+ '</td></tr>';
+                    }
+                })
+                daneDoWyciagniecia.opisListaZDanymi += '</table></tbody>';
+            }
+        }
+        
+        
+        
+        //TWORZENIE GOTOWEGO OPISU
+        
+        
+        
+        gotowyOpis += daneDoWyciagniecia.tytul + '\n\n';
+        if(coChceszWyciagnac.cena === 1){
+            gotowyOpis += daneDoWyciagniecia.cena + '\n';
+        }
+        if(coChceszWyciagnac.ean === 1){
+            gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
+        }
+        if(coChceszWyciagnac.opis === 1){
+            gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
+            gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
+        }
+       
+        if (ostrzezenia != '') {
+            gotowyOpis += 'UWAGA!!!!' + '\n';
+            gotowyOpis += ostrzezenia + '\n';
+        }
+        nazwaPoFormacie = daneDoWyciagniecia.tytul.replace(/ /g, "-").toLowerCase();
+        nazwaPoFormacie = nazwaPoFormacie.split('.').join('');
+        maintext += gotowyOpis;
+    }
+    
+    
+    
+    else if (window.location.href.includes('https://www.franke.com/')) {
+        const daneDoWyciagniecia = {
+                cena: '',
+                ean: '',
+                tytul: '',
+                opisTekstowy: '',
+                opisListaZDanymi: ''
+            };
+            let typ = '';
+            let model = '';
+            let gotowyOpis = '';
+            
+            //Dane to uzupełnienia
+            let cenaSelektor = '.cmp-product-hero__information .cmp-product-price-and-buy-container .cmp-product__price';
+            let eanSelektor = '.cmp-product-information .cmp-product-information-table__section-list__item .cmp-product-information-table__section-list__item__name';
+            let eanSelektorScriptJson = '';
+            let marka = 'Franke';
+            let modelSelektor = '.cmp-product-hero__information .cmp-product-hero__title';
+            let typSelektor = '.cmp-product-hero__information .cmp-product-hero__category';
+            let opisTekstowySelektorBezListy = '.productcomponents .cmp-product-hero__description';
+            let opisTekstowySelektorzLista = '';
+            let opisTekstowySelektorzListaNaglowek = '';
+            let opisTekstowySelektorzListaWartosc = '';
+            
+            let ostrzezenia = 'PRODUKT Z WARJANTAMI';
+            let opisListaZDanymiSelektor1Wiersza = '.cmp-product-information-table .cmp-product-information-table__section-list__item';    
+            let opisListaZDanymiSelektor1Naglowka = '.cmp-product-information-table__section-list__item__name';
+            let opisListaZDanymiSelektor1Wartosci = '.cmp-product-information-table__section-list__item__value';
+            
+            //wyciąganie EANU ze skryptu json
+            if(eanSelektorScriptJson != ''){
+                let scriptElement = document.querySelector(eanSelektorScriptJson);
+                let productData = JSON.parse(scriptElement.textContent);
+                daneDoWyciagniecia.ean = productData.gtin;
+            }
+            //wyciąganie Eanu
+            if(eanSelektor != '' && eanSelektorScriptJson == ''){
+                if(document.querySelectorAll(eanSelektor).length>0){
+                    document.querySelectorAll(eanSelektor).forEach((el)=>{
+                        if(el.innerText.toLowerCase() == 'ean/upc'){
+                            daneDoWyciagniecia.ean = el.parentNode.querySelector('.cmp-product-information-table__section-list__item__value');
+                        }
+                    })
+                }else{
+                    daneDoWyciagniecia.ean = 'BRAK WYCIĄGNIĘTEGO EANU';
+                }
+            }else if(eanSelektorScriptJson == ''){
+                daneDoWyciagniecia.ean = 'BRAK WYCIĄGNIĘTEGO EANU';
+            }
+            
+            //wyciąganie ceny
+            if(cenaSelektor != ''){
+                if(document.querySelectorAll(cenaSelektor).length > 0){
+                    daneDoWyciagniecia.cena = document.querySelector(cenaSelektor).innerText;
+                }else{
+                    daneDoWyciagniecia.cena = 'BRAK WYCIĄGNIĘTEJ CENY';
+                }
+            }else{
+                daneDoWyciagniecia.cena = 'BRAK WYCIĄGNIĘTEJ CENY';
+            }
+            //tworzenie tutułu
+            if(typSelektor != ''){
+                if(document.querySelectorAll(typSelektor).length >0){
+                    typ = document.querySelector(typSelektor).innerText;
+    
+                    if(typ.toLocaleLowerCase() == 'okapy kuchenne'){
+                        typ ='Okap kuchanny';
+                    }else if (typ.toLocaleLowerCase() == 'zmywarki'){
+                        typ ='Zmywarka';
+                    }else if (typ.toLocaleLowerCase() == 'chłodziarki'){
+                        typ ='Chłodziarka';
+                    }else if (typ.toLocaleLowerCase() == 'piekarniki'){
+                        typ ='Piekarnik';
+                    }else if (typ.toLocaleLowerCase() == 'płyty zintegrowane z okapem'){
+                        typ ='Płyta zintegrowana z okapem';
+                    }else if (typ.toLocaleLowerCase() == 'płyty grzewcze'){
+                        typ ='Płyta grzewcza';
+                    }else if (typ.toLocaleLowerCase() == 'baterie kuchenne'){
+                        typ ='Bateria kuchenna';
+                    }else if (typ.toLocaleLowerCase() == 'zlewozmywaki'){
+                        typ ='Zlewozmywak';
+                    }
+                }
+            }
+            if(modelSelektor != ''){
+                if(document.querySelectorAll(modelSelektor).length >0){
+                    model = document.querySelector(modelSelektor).innerText;
+                }
+            }
+            
+            //nazwaProduktu
+            daneDoWyciagniecia.tytul = '<h3>'+typ + ' ' + marka + ' ' + model + ' ' + '[TU WPISZ SKU]</h3>';
+            
+            
+            //wyciąganie opisu tekstowego
+            if(opisTekstowySelektorBezListy != ''){
+                if(document.querySelectorAll(opisTekstowySelektorBezListy).length > 0){
+                    daneDoWyciagniecia.opisTekstowy = '<p>'+ document.querySelector(opisTekstowySelektorBezListy).innerText + '</p>';
+                }
+            }
+            
+            //wyciąganie opisu tekstowego z listy
+            if(opisTekstowySelektorzLista != ''){
+                if(document.querySelectorAll(opisTekstowySelektorzLista).length > 0){
+                    document.querySelectorAll(opisTekstowySelektorzLista).forEach((el)=>{
+                        let napisNaglowek = '';
+                        let napisWartosc = '';
+                        if(el.querySelectorAll(opisTekstowySelektorzListaNaglowek).length > 0){
+                             napisNaglowek = el.querySelector(opisTekstowySelektorzListaNaglowek).innerText;
+                        }
+                        if(el.querySelectorAll(opisTekstowySelektorzListaWartosc).length > 0){
+                             napisWartosc = el.querySelector(opisTekstowySelektorzListaWartosc).innerText;
+                        }
+                        daneDoWyciagniecia.opisTekstowy += '<p>' + '<h5>'+napisNaglowek+ '</h5><br>'+ napisWartosc +'<br>' + '</p>';
+                    })
+                }
+            }
+            
+            //wyciąganie opisu z listą danych technicznych
+            if(opisListaZDanymiSelektor1Wiersza != ''){
+                if(document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).length > 0){
+                    daneDoWyciagniecia.opisListaZDanymi += '<h3>Dane techniczne</h3>';
+                    daneDoWyciagniecia.opisListaZDanymi += '<table style="width:100%;"><tbody style="width:100%;">';
+                    document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).forEach((el)=>{
+                        let napisOrg1 = el.querySelector(opisListaZDanymiSelektor1Naglowka).innerText;
+                        let napisOrg2 = el.querySelector(opisListaZDanymiSelektor1Wartosci).innerText;
+                    
+                        let napisFormatowany1 = napisOrg1.charAt(0).toUpperCase() + napisOrg1.slice(1).toLowerCase();
+                        let napisFormatowany2 = napisOrg2.charAt(0).toUpperCase() + napisOrg2.slice(1).toLowerCase();
+            
+                    
+                        if(napisFormatowany1 != "" && napisFormatowany2 != ""){
+                            daneDoWyciagniecia.opisListaZDanymi += '<tr><td>'+napisFormatowany1+ '</td><td style="font-weight: 600;">' +napisFormatowany2+ '</td></tr>';
+                        }
+                    })
+                    daneDoWyciagniecia.opisListaZDanymi += '</table></tbody>';
+                }
+            }
+            
+            
+            
+            //TWORZENIE GOTOWEGO OPISU
+            
+            
+            
+            gotowyOpis += daneDoWyciagniecia.tytul + '\n\n';
+            if(coChceszWyciagnac.cena === 1){
+                gotowyOpis += daneDoWyciagniecia.cena + '\n';
+            }
+            if(coChceszWyciagnac.ean === 1){
+                gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
+            }
+            if(coChceszWyciagnac.opis === 1){
+                gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
+                gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
+            }
+           
+            if (ostrzezenia != '') {
+                gotowyOpis += 'UWAGA!!!!' + '\n';
+                gotowyOpis += ostrzezenia + '\n';
+            }
+            nazwaPoFormacie = daneDoWyciagniecia.tytul.replace(/ /g, "-").toLowerCase();
+            nazwaPoFormacie = nazwaPoFormacie.split('.').join('');
+            maintext += gotowyOpis;
+        }
 
     return {
         maintext: maintext,
@@ -1234,6 +1722,8 @@ async function downloadImages(nazwaZdjec) {
         const limg2 = document.querySelectorAll('.a-container.a-container--nopadding picture img');
         
         limg = [...limg1, ...limg2];
+    }else if(window.location.href.includes('https://www.fulgor-milano.com')){
+        limg = document.querySelectorAll('.product-media-top .gallery-top picture img');
     }
 
     let imgl = limg.length;
