@@ -631,6 +631,7 @@ async function opis(coChceszWyciagnac) {
         nazwaPoFormacie = nazwaPoFormacie.split('.').join('');
         maintext += gotowyOpis;
 
+        nazwaPoFormacie = document.querySelector('.shop h1').innerText.replace(/\s+/g, "-");
     }
 
 
