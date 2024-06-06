@@ -151,9 +151,14 @@ async function opis(coChceszWyciagnac) {
             gotowyOpis += 'UWAGA!!!!' + '\n';
             gotowyOpis += ostrzezenia + '\n';
         }
+   
+        nazwaPoFormacie = daneDoWyciagniecia.tytul.toLowerCase();
 
-        nazwaPoFormacie = daneDoWyciagniecia.tytul.replace(/ /g, "-").toLowerCase();
-        nazwaPoFormacie = nazwaPoFormacie.split('.').join('');
+        nazwaPoFormacie = nazwaPoFormacie.replace(/[^0-9a-zA-Z]+/g, "-");
+
+        if (!/^[a-zA-Z]/.test(nazwaPoFormacie.charAt(0))) {
+            nazwaPoFormacie = nazwaPoFormacie.slice(1);
+        }
         maintext += gotowyOpis;
 
 
@@ -315,10 +320,15 @@ async function opis(coChceszWyciagnac) {
             gotowyOpis += 'UWAGA!!!!' + '\n';
             gotowyOpis += ostrzezenia + '\n';
         }
-        nazwaPoFormacie = daneDoWyciagniecia.tytul.replace(/ /g, "-").toLowerCase();
-        nazwaPoFormacie = nazwaPoFormacie.split('.').join('');
-        maintext += gotowyOpis;
+        nazwaPoFormacie = daneDoWyciagniecia.tytul.toLowerCase();
 
+        nazwaPoFormacie = nazwaPoFormacie.replace(/[^0-9a-zA-Z]+/g, "-");
+
+        if (!/^[a-zA-Z]/.test(nazwaPoFormacie.charAt(0))) {
+            nazwaPoFormacie = nazwaPoFormacie.slice(1);
+        }
+
+        maintext += gotowyOpis;
 
     } 
     
@@ -1703,7 +1713,11 @@ async function downloadImages(nazwaZdjec) {
     if (window.location.href.includes('www.siemens-home.bsh-group.com')) {
         limg = document.querySelectorAll('[id^="slick-slide"] > div > picture > img');
     } else if (window.location.href.includes('www.bosch-home.pl')) {
-        limg = document.querySelectorAll('[id^="slick-slide"] > div > picture > img');
+            let zdj = document.querySelectorAll('[id^="slick-slide"] > div > picture .js_vp_1[type="image/jpeg"]');
+            zdj.forEach((el)=>{
+                let gotowyLink = el.getAttribute('srcset').split(',')[1].trim().split(' ')[0];
+                tablicaZdjec.push('https:'+gotowyLink);
+            })
     } else if (window.location.href.includes('www.miele.pl')) {
         limg = document.querySelectorAll('.hls-product-gallery__wrapper img');
     } else if (window.location.href.includes('https://home.liebherr.com')) {
@@ -1731,7 +1745,7 @@ async function downloadImages(nazwaZdjec) {
     for (let i = 0; i < imgl; i++) {
         if (window.location.href.includes('https://home.liebherr.com') || window.location.href.includes('https://www.elica.com') || window.location.href.includes('https://www.aeg.pl') || window.location.href.includes('https://ciarko.com')) {
             tablicaZdjec.push(limg[i].getAttribute('href'));
-        } else {
+        } else if(!window.location.href.includes('www.bosch-home.pl')){
             tablicaZdjec.push(limg[i].getAttribute('src'));
         }
     }
