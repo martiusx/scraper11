@@ -152,6 +152,7 @@ async function opis(coChceszWyciagnac) {
             gotowyOpis += ostrzezenia + '\n';
         }
    
+        daneDoWyciagniecia.tytul = document.querySelector('.service-area h2.a-heading.product-code .fragment.std-header-6 ').innerText + ' ' + document.querySelector('.service-area .m-producttitle h1').innerText;
         nazwaPoFormacie = daneDoWyciagniecia.tytul.toLowerCase();
 
         nazwaPoFormacie = nazwaPoFormacie.replace(/[^0-9a-zA-Z]+/g, "-");
