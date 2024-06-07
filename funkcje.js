@@ -1711,9 +1711,7 @@ async function downloadImages(nazwaZdjec) {
     let limg = '';
     let tablicaZdjec = [];
 
-    if (window.location.href.includes('www.siemens-home.bsh-group.com')) {
-        limg = document.querySelectorAll('[id^="slick-slide"] > div > picture > img');
-    } else if (window.location.href.includes('www.bosch-home.pl')) {
+    if (window.location.href.includes('www.bosch-home.pl') || window.location.href.includes('www.siemens-home.bsh-group.com')) {
             let zdj = document.querySelectorAll('[id^="slick-slide"] > div > picture .js_vp_1[type="image/jpeg"]');
             zdj.forEach((el)=>{
                 let gotowyLink = el.getAttribute('srcset').split(',')[1].trim().split(' ')[0];
