@@ -4,7 +4,6 @@
     ]
   
   const coChceszWyciagnac = {
-      cena: 0,
       opis: 1,
       zdjecia: 1,
       ean: 1,
