@@ -1,99 +1,20 @@
-
-//siemens
-const tablicaSku = [
-    'WG44G2ZWPL',
-    'CT718L1B0'
-  ];
-
-//miele
-// const tablicaSku = [
-//     'G 7985 SCVi K2O XXL AutoDos',
-//     'G 7605 SCi XXL AutoDos',
-//     'KM 7361 FL'
-//   ];
-
-  //ciarko
-
-  // const tablicaSku = [
-  //   'delta',
-  //   'cre'
-  // ]
-
-  //elica
-
-//   const tablicaSku = [
-//     'haiku',
-//     'NikolaTesla Alpha'
-//   ];
-
-//bosh
-// const tablicaSku = [
-//     'HSG636BB1'
-    // 'SMH4ECX21E'
-    // 'PVS811B16E',
-    // 'KUL22VFD0',
-    // 'SMV8YCX02E',
-    // 'CBG7341B1',
-    // 'CMG7241B1',
-    // 'SMP6ZCS80S',
-    // 'CMG7241W1',
-    // 'SPV6ZMX17E',
-    // 'SMV4ETX00E',
-    // 'KIV87NSE0',
-    // 'DWK85DK60',
-    // 'DWB66BC6012',
-    // 'KIV86NFF0'
-// ];
-
-//LIEBHERR
-// const tablicaSku = [
-//     'WPgbi 7473',
-//     'WPbsi 5052'
-    // 'TK 14Vd00',
-    // 'KGBNsf 52Vc23',
-    // 'KU22LVFD0',
-    // 'SWTNes 4285'
-// ];
-
-// aeg
-// const tablicaSku = [
-//     'ABE818E6NC',
-//     'MSB2547D-M',
-//     'LWR98165XP',
-//     'FSB72907P',
-//     'LWR73166OP',
-//     'LWR85165OP',
-//     'L9WBAN61BC',
-//     'L9WBA61BC'
-//   ]
-  
-  //falmec
-  
-  // const tablicaSku = [
-  //     'Mira White',
-  //     'mercurio black'
-  // ];
-  
-  //fulgor
-  // const tablicaSku = [
-  //     'FCLSO 7510 TEM BK',
-  //     'FUSO 7505 MT IX',
-  //     'FUH 7541 G DWK MBK'
-  //   ]
+  const tablicaSku = [
+      'SN53ES06VE',
+      'SC05IB00TE'
+    ]
   
   const coChceszWyciagnac = {
       cena: 0,
-      opis: 0,
-      zdjecia: 0,
+      opis: 1,
+      zdjecia: 1,
       ean: 1,
-      pdf: 0
+      pdf: 1
   };
-  
   const jakiProducent = "siemens";
   
   const linkiDoWyszukiwaniaProduktow = {
       siemens: "https://www.siemens-home.bsh-group.com/pl/lista-produktow/ekspresy-do-kawy/automatyczne-ekspresy-do-kawy-do-zabudowy/",
-      bosh: "https://www.bosch-home.pl/lista-produktow/gotowanie-i-pieczenie/piekarniki/piekarniki-do-zabudowy/",
+      bosch: "https://www.bosch-home.pl/lista-produktow/gotowanie-i-pieczenie/piekarniki/piekarniki-do-zabudowy/",
       miele: "https://www.miele.pl/e/wyszukiwarka-s?text=",
       liebherr: "https://home.liebherr.com/pl/pol/global/search/search.html?searchterm=",
       ciarko: "https://ciarko.com/linia-basic/",
