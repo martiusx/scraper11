@@ -1,4 +1,9 @@
-  const tablicaSku = [
+/*
+Zapytanie do ChatGPT:
+napisz tekst opisowy dla produktu będący zajawką opisującą najważniejsze elementy funkcjonalne tego produktu. Stwórz to w formie ciekawostki:
+*/
+
+const tablicaSku = [
       'SN53ES06VE',
       'SC05IB00TE'
     ]
