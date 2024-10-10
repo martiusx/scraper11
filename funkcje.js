@@ -185,19 +185,20 @@ async function opis(coChceszWyciagnac) {
         //Dane to uzupełnienia
         let cenaSelektor = '';
         let eanSelektor = '';
-        let eanSelektorScriptJson = '#product-data';
+        let eanSelektorScriptJson = 'script[type="application/ld+json"]:nth-of-type(3)';
         let marka = 'Bosch';
         let modelSelektor = '';
         let typSelektor = '';
         let opisTekstowySelektorBezListy = '';
-        let opisTekstowySelektorzLista = '.keybenefits-wrapper ul li';
-        let opisTekstowySelektorzListaNaglowek = '.highlight.copi-link';
-        let opisTekstowySelektorzListaWartosc = '.js-copi-text.copi-text';
+        let opisTekstowySelektorzLista = 'div[data-testid="technical-overview-list"] div[data-testid="technical-overview-item"]'; //li
+        let opisTekstowySelektorzListaNaglowek = 'div:nth-of-type(1)';
+        let opisTekstowySelektorzListaWartosc = 'div:nth-of-type(2)';
         
         let ostrzezenia = '';
-        let opisListaZDanymiSelektor1Wiersza = '.m-technical-info-rebrush .technical-info-content-wrap .technical-info-item.js-technical-info-item > p:nth-child(1)';    
-        let opisListaZDanymiSelektor1Naglowka = '';
-        let opisListaZDanymiSelektor1Wartosci = '';
+        let doRozwiniecia = 'div[data-state="closed"] button';
+        let opisListaZDanymiSelektor1Wiersza = 'div[data-testid="feature-list"] .css-dbs51r';    
+        let opisListaZDanymiSelektor1Naglowka = 'span[data-testid="feature-list-headline"]';
+        let opisListaZDanymiSelektor1Wartosci = 'div[data-testid="feature-list-content"]';
         
         //wyciąganie EANU ze skryptu json
         if(eanSelektorScriptJson != ''){
@@ -239,15 +240,16 @@ async function opis(coChceszWyciagnac) {
         }
         
         //nazwaProduktu
-        daneDoWyciagniecia.tytul = '<h3>'+typ + ' ' + marka + ' ' + model + ' ' + '[TU WPISZ SKU]</h3>';
+        //daneDoWyciagniecia.tytul = '<h3>'+typ + ' ' + marka + ' ' + model + ' ' + '[TU WPISZ SKU]</h3>';
         
-        daneDoWyciagniecia.tytul = document.querySelector('.o-productdetail-rebrush .std-header-2').innerText + ' Bosch ' + document.querySelector('.o-productdetail-rebrush .product-code .std-header-6 ').innerText + ' ' + document.querySelector('.o-productdetail-rebrush .std-header-4').innerText + ' ' + document.querySelector('.o-productdetail-rebrush .std-header-1').innerText;
+        daneDoWyciagniecia.tytul = document.querySelector('div[data-testid="product-title"] h1 > span').innerText + ' Bosch ' + document.querySelector('div[data-testid="product-title"] h1  span[data-testid="product-id-label"]').innerText;
         
-        if (document.querySelectorAll('.o-productdetail-rebrush .std-header-5').length > 0) {
-            daneDoWyciagniecia.tytul += ' ' + document.querySelector('.o-productdetail-rebrush .std-header-5').innerText;
-        }
+        // if (document.querySelectorAll('.o-productdetail-rebrush .std-header-5').length > 0) {
+        //     daneDoWyciagniecia.tytul += ' ' + document.querySelector('.o-productdetail-rebrush .std-header-5').innerText;
+        // }
         
         //wyciąganie opisu tekstowego
+    
         if(opisTekstowySelektorBezListy != ''){
             if(document.querySelectorAll(opisTekstowySelektorBezListy).length > 0){
                 daneDoWyciagniecia.opisTekstowy = '<p>'+ document.querySelector(opisTekstowySelektorBezListy).innerText + '</p>';
@@ -272,69 +274,92 @@ async function opis(coChceszWyciagnac) {
         }
         
         //wyciąganie opisu z listą danych technicznych
-        if(opisListaZDanymiSelektor1Wiersza != ''){
-            if(document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).length > 0){
-                daneDoWyciagniecia.opisListaZDanymi += '<table style="width:100%;"><tbody style="width:100%;">';
-                document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).forEach((el)=>{
-                    let t = el.innerText.replace(':', '$');
-                    let tt = '';
-        
-                    if (el.parentNode.querySelectorAll('p:nth-child(2)').length > 0) {
-                        tt = el.parentNode.querySelector('p:nth-child(2)').innerText;
-                    } else {
-                        tt = el.parentNode.querySelector('p:nth-child(1)').innerText;
+        let rozwiniete = false; // Zmienna kontrolująca stan rozwinięcia
+    
+        if (document.querySelectorAll(doRozwiniecia).length > 0) {
+            document.querySelector(doRozwiniecia).scrollIntoView(); // Płynne przewinięcie ekranu do elementu
+            setTimeout(() => {
+                document.querySelectorAll(doRozwiniecia).forEach((el,index) => {
+                    if (el.offsetParent !== null) { // Sprawdzamy, czy element jest widoczny
+                        setTimeout(() => {
+                            el.click();
+                             if (index === document.querySelectorAll(doRozwiniecia).length - 1) {
+                                rozwiniete = true;
+                                console.log('Wszystkie elementy kliknięte, rozwiniete = true');
+                            }
+    
+                        }, 1000 * index); // Kliknięcie po 1 sekundzie
                     }
-        
-                    t = t.split('$');
-        
-                    if (t.length == 1) {
-                        daneDoWyciagniecia.opisListaZDanymi += '<tr><td style="font-weight:600;vertical-align: top;padding-bottom: 6px;">' + t[0] + '</td><td style="padding-bottom:6px;">' + tt + '</td></tr>';
+                });
+            }, 2000); // Kliknięcie po 1 sekundzie
+        }
+    
+        let juzWykonano = false;
+        setInterval(()=>{
+            if(rozwiniete && !juzWykonano){
+                if(opisListaZDanymiSelektor1Wiersza != ''){
+                    if(document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).length > 0){
+                        daneDoWyciagniecia.opisListaZDanymi += '<h4><strong>Dane techniczne:</strong></h4><table style="width:100%;"><tbody style="width:100%;">';
+                        document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).forEach((el)=>{
+                            console.log('poszloSrodek');
+                            let t = el.querySelector(opisListaZDanymiSelektor1Naglowka);
+                            let tt = el.querySelector(opisListaZDanymiSelektor1Wartosci);
+                
+                            // if (el.parentNode.querySelectorAll('p:nth-child(2)').length > 0) {
+                            //     tt = el.parentNode.querySelector('p:nth-child(2)').innerText;
+                            // } else {
+                            //     tt = el.parentNode.querySelector('p:nth-child(1)').innerText;
+                            // }
+                
+                            //t = t.split('$');
+                
+                                daneDoWyciagniecia.opisListaZDanymi += '<tr><td style="font-weight:600;vertical-align: top;padding-bottom: 6px;">' + t.innerText + '</td><td style="padding-bottom:6px;">' + tt.innerText + '</td></tr>';
+    
+                        })
+                        daneDoWyciagniecia.opisListaZDanymi += '</table></tbody>';
                     }
-        
-                    if (t.length == 2) {
-                        daneDoWyciagniecia.opisListaZDanymi += '<tr><td style="font-weight:600;vertical-align: top;padding:0 10px 6px 0;">' + t[0] + '</td><td style="padding-bottom:6px;">' + t[1] + '</td></tr>';
-                    }
-                })
-                daneDoWyciagniecia.opisListaZDanymi += '</table></tbody>';
+                }
+                
+                
+                
+                //TWORZENIE GOTOWEGO OPISU
+                
+                
+                
+                gotowyOpis += daneDoWyciagniecia.tytul + '\n\n';
+                if(coChceszWyciagnac.cena === 1){
+                    gotowyOpis += daneDoWyciagniecia.cena + '\n';
+                }
+                if(coChceszWyciagnac.ean === 1){
+                    gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
+                }
+                if(coChceszWyciagnac.opis === 1){
+                    gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
+                    gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
+                }
+               
+                if (ostrzezenia != '') {
+                    gotowyOpis += 'UWAGA!!!!' + '\n';
+                    gotowyOpis += ostrzezenia + '\n';
+                }
+                nazwaPoFormacie = daneDoWyciagniecia.tytul.toLowerCase();
+            
+                nazwaPoFormacie = nazwaPoFormacie.replace(/[^0-9a-zA-Z]+/g, "-");
+            
+                if (!/^[a-zA-Z]/.test(nazwaPoFormacie.charAt(0))) {
+                    nazwaPoFormacie = nazwaPoFormacie.slice(1);
+                }
+            
+                maintext += gotowyOpis;
+                juzWykonano = true;
             }
-        }
-        
-        
-        
-        //TWORZENIE GOTOWEGO OPISU
-        
-        
-        
-        gotowyOpis += daneDoWyciagniecia.tytul + '\n\n';
-        if(coChceszWyciagnac.cena === 1){
-            gotowyOpis += daneDoWyciagniecia.cena + '\n';
-        }
-        if(coChceszWyciagnac.ean === 1){
-            gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
-        }
-        if(coChceszWyciagnac.opis === 1){
-            gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
-            gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
-        }
-       
-        if (ostrzezenia != '') {
-            gotowyOpis += 'UWAGA!!!!' + '\n';
-            gotowyOpis += ostrzezenia + '\n';
-        }
-        nazwaPoFormacie = daneDoWyciagniecia.tytul.toLowerCase();
-
-        nazwaPoFormacie = nazwaPoFormacie.replace(/[^0-9a-zA-Z]+/g, "-");
-
-        if (!/^[a-zA-Z]/.test(nazwaPoFormacie.charAt(0))) {
-            nazwaPoFormacie = nazwaPoFormacie.slice(1);
-        }
-
-        maintext += gotowyOpis;
-
+        })
     } 
-    
-    
-    
+
+
+
+
+
     
     else if (window.location.href.includes('www.miele.pl')) {
         const daneDoWyciagniecia = {
