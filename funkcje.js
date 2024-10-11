@@ -375,6 +375,29 @@ async function opis(coChceszWyciagnac) {
                 juzWykonano = true;
             }
         })
+
+
+        function formatTitleForFilename(title) {
+            // Zamiana polskich znaków na ich odpowiedniki
+            const polishChars = {
+                'ą': 'a', 'ć': 'c', 'ę': 'e', 'ł': 'l', 'ń': 'n', 'ó': 'o', 'ś': 's', 'ż': 'z', 'ź': 'z',
+                'Ą': 'A', 'Ć': 'C', 'Ę': 'E', 'Ł': 'L', 'Ń': 'N', 'Ó': 'O', 'Ś': 'S', 'Ż': 'Z', 'Ź': 'Z'
+            };
+        
+            // Usunięcie symboli, zamiana polskich znaków i spacji na "-"
+            return title
+                .replace(/[ąćęłńóśżźĄĆĘŁŃÓŚŻŹ]/g, char => polishChars[char] || char)
+                .replace(/[^a-zA-Z0-9\s]/g, '')  // Usunięcie wszystkich znaków niealfanumerycznych oprócz spacji
+                .trim()  // Usunięcie białych znaków z początku i końca
+                .replace(/\s+/g, '-');  // Zamiana spacji na "-"
+        }
+        
+        // Pobieranie tytułu z elementu i formatowanie go
+        const title = document.querySelector('span[data-testid="buy-area-title-headline"]').innerText;
+        const formattedTitle = formatTitleForFilename(title);
+        
+        console.log(formattedTitle);
+        nazwaPoFormacie = formattedTitle;
     } 
 
 
