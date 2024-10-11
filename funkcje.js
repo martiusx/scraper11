@@ -396,8 +396,8 @@ async function opis(coChceszWyciagnac) {
         const title = document.querySelector('span[data-testid="buy-area-title-headline"]').innerText;
         const formattedTitle = formatTitleForFilename(title);
         
-        console.log(formattedTitle);
-        nazwaPoFormacie = formattedTitle;
+        console.log(formattedTitle)+'-'+document.querySelector('span[data-testid="product-id-label"]').innerText;
+        nazwaPoFormacie = formattedTitle+'-'+document.querySelector('span[data-testid="product-id-label"]').innerText;
     } 
 
 
