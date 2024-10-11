@@ -191,8 +191,8 @@ async function opis(coChceszWyciagnac) {
                 checkCondition();
             });
         }
-
-         const daneDoWyciagniecia = {
+        
+        const daneDoWyciagniecia = {
             cena: '',
             ean: '',
             tytul: '',
@@ -203,78 +203,181 @@ async function opis(coChceszWyciagnac) {
         let model = '';
         let gotowyOpis = '';
         
-        // Inicjalizacje innych zmiennych...
-
-        // Wyciąganie EANU ze skryptu JSON
-        if(eanSelektorScriptJson != '') {
+        //Dane to uzupełnienia
+        let cenaSelektor = '';
+        let eanSelektor = '';
+        let eanSelektorScriptJson = 'script[type="application/ld+json"]:nth-of-type(3)';
+        let marka = 'Bosch';
+        let modelSelektor = '';
+        let typSelektor = '';
+        let opisTekstowySelektorBezListy = '';
+        let opisTekstowySelektorzLista = 'div[data-testid="technical-overview-list"] div[data-testid="technical-overview-item"]'; //li
+        let opisTekstowySelektorzListaNaglowek = 'div:nth-of-type(1)';
+        let opisTekstowySelektorzListaWartosc = 'div:nth-of-type(2)';
+        
+        let ostrzezenia = '';
+        let doRozwiniecia = 'div[data-state="closed"] button';
+        let opisListaZDanymiSelektor1Wiersza = 'div[data-testid="feature-list"] .css-dbs51r';    
+        let opisListaZDanymiSelektor1Naglowka = 'span[data-testid="feature-list-headline"]';
+        let opisListaZDanymiSelektor1Wartosci = 'div[data-testid="feature-list-content"]';
+        
+        //wyciąganie EANU ze skryptu json
+        if(eanSelektorScriptJson != ''){
             let scriptElement = document.querySelector(eanSelektorScriptJson);
             let productData = JSON.parse(scriptElement.textContent);
             daneDoWyciagniecia.ean = productData.gtin;
         }
-
-        // Wyciąganie ceny i inne operacje...
-
-        // Rozwijanie sekcji technicznych
-        let rozwiniete = false;
-
+        //wyciąganie Eanu
+        if(eanSelektor != '' && eanSelektorScriptJson == ''){
+            if(document.querySelectorAll(eanSelektor).length>0){
+                daneDoWyciagniecia.ean = document.querySelector(eanSelektor).innerText;
+            }else{
+                daneDoWyciagniecia.ean = 'BRAK WYCIĄGNIĘTEGO EANU';
+            }
+        }else if(eanSelektorScriptJson == ''){
+            daneDoWyciagniecia.ean = 'BRAK WYCIĄGNIĘTEGO EANU';
+        }
+        
+        //wyciąganie ceny
+        if(cenaSelektor != ''){
+            if(document.querySelectorAll(cenaSelector).length > 0){
+                daneDoWyciagniecia.cena = document.querySelector(cenaSelector).innerText;
+            }else{
+                daneDoWyciagniecia.cena = 'BRAK WYCIĄGNIĘTEJ CENY';
+            }
+        }else{
+            daneDoWyciagniecia.cena = 'BRAK WYCIĄGNIĘTEJ CENY';
+        }
+        //tworzenie tutułu
+        if(typSelektor != ''){
+            if(document.querySelectorAll(typSelektor).length >0){
+                typ = document.querySelector(typSelektor).innerText;
+            }
+        }
+        if(modelSelektor != ''){
+            if(document.querySelectorAll(modelSelektor).length >0){
+                model = document.querySelector(modelSelektor).innerText;
+            }
+        }
+        
+        //nazwaProduktu
+        //daneDoWyciagniecia.tytul = '<h3>'+typ + ' ' + marka + ' ' + model + ' ' + '[TU WPISZ SKU]</h3>';
+        
+        daneDoWyciagniecia.tytul = document.querySelector('div[data-testid="product-title"] h1 > span').innerText + ' Bosch ' + document.querySelector('div[data-testid="product-title"] h1  span[data-testid="product-id-label"]').innerText;
+        
+        // if (document.querySelectorAll('.o-productdetail-rebrush .std-header-5').length > 0) {
+        //     daneDoWyciagniecia.tytul += ' ' + document.querySelector('.o-productdetail-rebrush .std-header-5').innerText;
+        // }
+        
+        //wyciąganie opisu tekstowego
+    
+        if(opisTekstowySelektorBezListy != ''){
+            if(document.querySelectorAll(opisTekstowySelektorBezListy).length > 0){
+                daneDoWyciagniecia.opisTekstowy = '<p>'+ document.querySelector(opisTekstowySelektorBezListy).innerText + '</p>';
+            }
+        }
+        
+        //wyciąganie opisu tekstowego z listy
+        if(opisTekstowySelektorzLista != ''){
+            if(document.querySelectorAll(opisTekstowySelektorzLista).length > 0){
+                document.querySelectorAll(opisTekstowySelektorzLista).forEach((el)=>{
+                    let napisNaglowek = '';
+                    let napisWartosc = '';
+                    if(el.querySelectorAll(opisTekstowySelektorzListaNaglowek).length > 0){
+                         napisNaglowek = el.querySelector(opisTekstowySelektorzListaNaglowek).innerText;
+                    }
+                    if(el.querySelectorAll(opisTekstowySelektorzListaWartosc).length > 0){
+                         napisWartosc = el.querySelector(opisTekstowySelektorzListaWartosc).innerText;
+                    }
+                    daneDoWyciagniecia.opisTekstowy += '<p>' + '<h5>'+napisNaglowek+ '</h5><br>'+ napisWartosc +'<br>' + '</p>';
+                })
+            }
+        }
+        
+        //wyciąganie opisu z listą danych technicznych
+        let rozwiniete = false; // Zmienna kontrolująca stan rozwinięcia
+    
         if (document.querySelectorAll(doRozwiniecia).length > 0) {
             document.querySelector(doRozwiniecia).scrollIntoView(); // Płynne przewinięcie ekranu do elementu
-            await delay(2000); // Czekamy 2 sekundy przed rozpoczęciem klikania
-            
-            const elements = document.querySelectorAll(doRozwiniecia);
-            const visibleElements = Array.from(elements).filter(el => el.offsetParent !== null);
-
-            for (let index = 0; index < visibleElements.length; index++) {
-                visibleElements[index].click();
-                console.log(visibleElements[index] + ' click');
-                await delay(1000); // Czekamy sekundę pomiędzy kliknięciami
-            }
-
-            rozwiniete = true;
-            console.log('Wszystkie elementy kliknięte, rozwiniete = true');
-        }
-
-        // Czekamy na rozwinięcie sekcji
-        await waitForInterval(() => rozwiniete);
-
-        // Przetwarzanie opisu z listą danych technicznych
-        if(opisListaZDanymiSelektor1Wiersza != '') {
-            if(document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).length > 0) {
-                daneDoWyciagniecia.opisListaZDanymi += '<h4><strong>Dane techniczne:</strong></h4><table style="width:100%;"><tbody style="width:100%;">';
-                document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).forEach((el) => {
-                    let t = el.querySelector(opisListaZDanymiSelektor1Naglowka);
-                    let tt = el.querySelector(opisListaZDanymiSelektor1Wartosci);
-
-                    daneDoWyciagniecia.opisListaZDanymi += '<tr><td style="font-weight:600;vertical-align: top;padding-bottom: 6px;">' + t.innerText + '</td><td style="padding-bottom:6px;">' + tt.innerText + '</td></tr>';
+            setTimeout(() => {
+                document.querySelectorAll(doRozwiniecia).forEach((el,index) => {
+                    if (el.offsetParent !== null) { // Sprawdzamy, czy element jest widoczny
+                        setTimeout(() => {
+                            el.click();
+                             if (index === document.querySelectorAll(doRozwiniecia).length - 1) {
+                                rozwiniete = true;
+                                console.log('Wszystkie elementy kliknięte, rozwiniete = true');
+                            }
+    
+                        }, 1000 * index); // Kliknięcie po 1 sekundzie
+                    }
                 });
-                daneDoWyciagniecia.opisListaZDanymi += '</table></tbody>';
+            }, 2000); // Kliknięcie po 1 sekundzie
+        }
+    
+        let juzWykonano = false;
+        setInterval(()=>{
+            if(rozwiniete && !juzWykonano){
+                if(opisListaZDanymiSelektor1Wiersza != ''){
+                    if(document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).length > 0){
+                        daneDoWyciagniecia.opisListaZDanymi += '<h4><strong>Dane techniczne:</strong></h4><table style="width:100%;"><tbody style="width:100%;">';
+                        document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).forEach((el)=>{
+                            console.log('poszloSrodek');
+                            let t = el.querySelector(opisListaZDanymiSelektor1Naglowka);
+                            let tt = el.querySelector(opisListaZDanymiSelektor1Wartosci);
+                
+                            // if (el.parentNode.querySelectorAll('p:nth-child(2)').length > 0) {
+                            //     tt = el.parentNode.querySelector('p:nth-child(2)').innerText;
+                            // } else {
+                            //     tt = el.parentNode.querySelector('p:nth-child(1)').innerText;
+                            // }
+                
+                            //t = t.split('$');
+                
+                                daneDoWyciagniecia.opisListaZDanymi += '<tr><td style="font-weight:600;vertical-align: top;padding-bottom: 6px;">' + t.innerText + '</td><td style="padding-bottom:6px;">' + tt.innerText + '</td></tr>';
+    
+                        })
+                        daneDoWyciagniecia.opisListaZDanymi += '</table></tbody>';
+                    }
+                }
+                
+                
+                
+                //TWORZENIE GOTOWEGO OPISU
+                
+                
+                
+                gotowyOpis += daneDoWyciagniecia.tytul + '\n\n';
+                if(coChceszWyciagnac.cena === 1){
+                    gotowyOpis += daneDoWyciagniecia.cena + '\n';
+                }
+                if(coChceszWyciagnac.ean === 1){
+                    gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
+                }
+                if(coChceszWyciagnac.opis === 1){
+                    gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
+                    gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
+                }
+               
+                if (ostrzezenia != '') {
+                    gotowyOpis += 'UWAGA!!!!' + '\n';
+                    gotowyOpis += ostrzezenia + '\n';
+                }
+                nazwaPoFormacie = daneDoWyciagniecia.tytul.toLowerCase();
+            
+                nazwaPoFormacie = nazwaPoFormacie.replace(/[^0-9a-zA-Z]+/g, "-");
+            
+                if (!/^[a-zA-Z]/.test(nazwaPoFormacie.charAt(0))) {
+                    nazwaPoFormacie = nazwaPoFormacie.slice(1);
+                }
+            
+                maintext += gotowyOpis;
+                juzWykonano = true;
             }
-        }
+        })
+    } 
 
-        // Tworzenie gotowego opisu
-        gotowyOpis += daneDoWyciagniecia.tytul + '\n\n';
-        if(coChceszWyciagnac.cena === 1) {
-            gotowyOpis += daneDoWyciagniecia.cena + '\n';
-        }
-        if(coChceszWyciagnac.ean === 1) {
-            gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
-        }
-        if(coChceszWyciagnac.opis === 1) {
-            gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
-            gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
-        }
 
-        if (ostrzezenia != '') {
-            gotowyOpis += 'UWAGA!!!!' + '\n';
-            gotowyOpis += ostrzezenia + '\n';
-        }
-
-        nazwaPoFormacie = daneDoWyciagniecia.tytul.toLowerCase().replace(/[^0-9a-zA-Z]+/g, "-").replace(/^[^a-zA-Z]+/, '');
-
-        maintext += gotowyOpis;
-
-        return { maintext, nazwaPoFormacie };
-    }
 
 
 
@@ -1655,10 +1758,10 @@ async function downloadImages(nazwaZdjec) {
     let tablicaZdjec = [];
 
     if (window.location.href.includes('www.bosch-home.pl') || window.location.href.includes('www.siemens-home.bsh-group.com')) {
-            let zdj = document.querySelectorAll('[id^="slick-slide"] > div > picture .js_vp_1[type="image/jpeg"]');
+            let zdj = document.querySelectorAll('.swiper-wrapper > div >div[data-testid="media-cloud-image-container-fill"] img');
             zdj.forEach((el)=>{
-                let gotowyLink = el.getAttribute('srcset').split(',')[1].trim().split(' ')[0];
-                tablicaZdjec.push('https:'+gotowyLink);
+                let gotowyLink = el.getAttribute('src');
+                tablicaZdjec.push(gotowyLink);
             })
     } else if (window.location.href.includes('www.miele.pl')) {
         limg = document.querySelectorAll('.hls-product-gallery__wrapper img');
