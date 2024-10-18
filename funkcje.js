@@ -1781,11 +1781,17 @@ async function downloadImages(nazwaZdjec) {
     let limg = '';
     let tablicaZdjec = [];
 
-    if (window.location.href.includes('www.bosch-home.pl') || window.location.href.includes('www.siemens-home.bsh-group.com')) {
+    if (window.location.href.includes('www.bosch-home.pl')) {
             let zdj = document.querySelectorAll('.swiper-wrapper > div >div[data-testid="media-cloud-image-container-fill"] img');
             zdj.forEach((el)=>{
                 let gotowyLink = el.getAttribute('src');
                 tablicaZdjec.push(gotowyLink);
+            })
+    } else if(window.location.href.includes('www.siemens-home.bsh-group.com')){
+        let zdj = document.querySelectorAll('[id^="slick-slide"] > div > picture .js_vp_1[type="image/jpeg"]');
+            zdj.forEach((el)=>{
+                let gotowyLink = el.getAttribute('srcset').split(',')[1].trim().split(' ')[0];
+                tablicaZdjec.push('https:'+gotowyLink);
             })
     } else if (window.location.href.includes('www.miele.pl')) {
         limg = document.querySelectorAll('.hls-product-gallery__wrapper img');
