@@ -172,25 +172,25 @@ async function opis(coChceszWyciagnac) {
     
     else if (window.location.href.includes('www.bosch-home.pl')) {
 
-        function delay(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
+        // function delay(ms) {
+        //  return new Promise(resolve => setTimeout(resolve, ms));
+        // }
         
-        function waitForInterval(conditionFn, intervalMs = 100, timeoutMs = 5000) {
-            return new Promise((resolve, reject) => {
-                const startTime = Date.now();
-                const checkCondition = () => {
-                    if (conditionFn()) {
-                        resolve(true);
-                    } else if (Date.now() - startTime > timeoutMs) {
-                        reject(new Error('Timeout exceeded waiting for condition.'));
-                    } else {
-                        setTimeout(checkCondition, intervalMs);
-                    }
-                };
-                checkCondition();
-            });
-        }
+        // function waitForInterval(conditionFn, intervalMs = 100, timeoutMs = 5000) {
+        //     return new Promise((resolve, reject) => {
+        //         const startTime = Date.now();
+        //         const checkCondition = () => {
+        //             if (conditionFn()) {
+        //                 resolve(true);
+        //             } else if (Date.now() - startTime > timeoutMs) {
+        //                 reject(new Error('Timeout exceeded waiting for condition.'));
+        //             } else {
+        //                 setTimeout(checkCondition, intervalMs);
+        //             }
+        //         };
+        //         checkCondition();
+        //     });
+        // }
         
         const daneDoWyciagniecia = {
             cena: '',
@@ -222,48 +222,48 @@ async function opis(coChceszWyciagnac) {
         let opisListaZDanymiSelektor1Wartosci = 'div[data-testid="feature-list-content"]';
         
         //wyciąganie EANU ze skryptu json
-        if(eanSelektorScriptJson != ''){
-            let scriptElement = document.querySelector(eanSelektorScriptJson);
-            let productData = JSON.parse(scriptElement.textContent);
-            daneDoWyciagniecia.ean = productData.gtin;
-        }
+        // if(eanSelektorScriptJson != ''){
+        //     let scriptElement = document.querySelector(eanSelektorScriptJson);
+        //     let productData = JSON.parse(scriptElement.textContent);
+        //     daneDoWyciagniecia.ean = productData.gtin;
+        // }
         //wyciąganie Eanu
-        if(eanSelektor != '' && eanSelektorScriptJson == ''){
-            if(document.querySelectorAll(eanSelektor).length>0){
-                daneDoWyciagniecia.ean = document.querySelector(eanSelektor).innerText;
-            }else{
-                daneDoWyciagniecia.ean = 'BRAK WYCIĄGNIĘTEGO EANU';
-            }
-        }else if(eanSelektorScriptJson == ''){
-            daneDoWyciagniecia.ean = 'BRAK WYCIĄGNIĘTEGO EANU';
-        }
+        // if(eanSelektor != '' && eanSelektorScriptJson == ''){
+        //     if(document.querySelectorAll(eanSelektor).length>0){
+        //         daneDoWyciagniecia.ean = document.querySelector(eanSelektor).innerText;
+        //     }else{
+        //         daneDoWyciagniecia.ean = 'BRAK WYCIĄGNIĘTEGO EANU';
+        //     }
+        // }else if(eanSelektorScriptJson == ''){
+        //     daneDoWyciagniecia.ean = 'BRAK WYCIĄGNIĘTEGO EANU';
+        // }
         
         //wyciąganie ceny
-        if(cenaSelektor != ''){
-            if(document.querySelectorAll(cenaSelector).length > 0){
-                daneDoWyciagniecia.cena = document.querySelector(cenaSelector).innerText;
-            }else{
-                daneDoWyciagniecia.cena = 'BRAK WYCIĄGNIĘTEJ CENY';
-            }
-        }else{
-            daneDoWyciagniecia.cena = 'BRAK WYCIĄGNIĘTEJ CENY';
-        }
+        // if(cenaSelektor != ''){
+        //     if(document.querySelectorAll(cenaSelector).length > 0){
+        //         daneDoWyciagniecia.cena = document.querySelector(cenaSelector).innerText;
+        //     }else{
+        //         daneDoWyciagniecia.cena = 'BRAK WYCIĄGNIĘTEJ CENY';
+        //     }
+        // }else{
+        //     daneDoWyciagniecia.cena = 'BRAK WYCIĄGNIĘTEJ CENY';
+        // }
         //tworzenie tutułu
-        if(typSelektor != ''){
-            if(document.querySelectorAll(typSelektor).length >0){
-                typ = document.querySelector(typSelektor).innerText;
-            }
-        }
-        if(modelSelektor != ''){
-            if(document.querySelectorAll(modelSelektor).length >0){
-                model = document.querySelector(modelSelektor).innerText;
-            }
-        }
+        // if(typSelektor != ''){
+        //     if(document.querySelectorAll(typSelektor).length >0){
+        //         typ = document.querySelector(typSelektor).innerText;
+        //     }
+        // }
+        // if(modelSelektor != ''){
+        //     if(document.querySelectorAll(modelSelektor).length >0){
+        //         model = document.querySelector(modelSelektor).innerText;
+        //     }
+        // }
         
         //nazwaProduktu
         //daneDoWyciagniecia.tytul = '<h3>'+typ + ' ' + marka + ' ' + model + ' ' + '[TU WPISZ SKU]</h3>';
         
-        daneDoWyciagniecia.tytul = document.querySelector('div[data-testid="product-title"] h1 > span').innerText + ' Bosch ' + document.querySelector('div[data-testid="product-title"] h1  span[data-testid="product-id-label"]').innerText;
+        //daneDoWyciagniecia.tytul = document.querySelector('div[data-testid="product-title"] h1 > span').innerText + ' Bosch ' + document.querySelector('div[data-testid="product-title"] h1  span[data-testid="product-id-label"]').innerText;
         
         // if (document.querySelectorAll('.o-productdetail-rebrush .std-header-5').length > 0) {
         //     daneDoWyciagniecia.tytul += ' ' + document.querySelector('.o-productdetail-rebrush .std-header-5').innerText;
@@ -271,110 +271,110 @@ async function opis(coChceszWyciagnac) {
         
         //wyciąganie opisu tekstowego
     
-        if(opisTekstowySelektorBezListy != ''){
-            if(document.querySelectorAll(opisTekstowySelektorBezListy).length > 0){
-                daneDoWyciagniecia.opisTekstowy = '<p>'+ document.querySelector(opisTekstowySelektorBezListy).innerText + '</p>';
-            }
-        }
+        // if(opisTekstowySelektorBezListy != ''){
+        //     if(document.querySelectorAll(opisTekstowySelektorBezListy).length > 0){
+        //         daneDoWyciagniecia.opisTekstowy = '<p>'+ document.querySelector(opisTekstowySelektorBezListy).innerText + '</p>';
+        //     }
+        // }
         
         //wyciąganie opisu tekstowego z listy
-        if(opisTekstowySelektorzLista != ''){
-            if(document.querySelectorAll(opisTekstowySelektorzLista).length > 0){
-                document.querySelectorAll(opisTekstowySelektorzLista).forEach((el)=>{
-                    let napisNaglowek = '';
-                    let napisWartosc = '';
-                    if(el.querySelectorAll(opisTekstowySelektorzListaNaglowek).length > 0){
-                         napisNaglowek = el.querySelector(opisTekstowySelektorzListaNaglowek).innerText;
-                    }
-                    if(el.querySelectorAll(opisTekstowySelektorzListaWartosc).length > 0){
-                         napisWartosc = el.querySelector(opisTekstowySelektorzListaWartosc).innerText;
-                    }
-                    daneDoWyciagniecia.opisTekstowy += '<p>' + '<h5>'+napisNaglowek+ '</h5><br>'+ napisWartosc +'<br>' + '</p>';
-                })
-            }
-        }
+        // if(opisTekstowySelektorzLista != ''){
+        //     if(document.querySelectorAll(opisTekstowySelektorzLista).length > 0){
+        //         document.querySelectorAll(opisTekstowySelektorzLista).forEach((el)=>{
+        //             let napisNaglowek = '';
+        //             let napisWartosc = '';
+        //             if(el.querySelectorAll(opisTekstowySelektorzListaNaglowek).length > 0){
+        //                  napisNaglowek = el.querySelector(opisTekstowySelektorzListaNaglowek).innerText;
+        //             }
+        //             if(el.querySelectorAll(opisTekstowySelektorzListaWartosc).length > 0){
+        //                  napisWartosc = el.querySelector(opisTekstowySelektorzListaWartosc).innerText;
+        //             }
+        //             daneDoWyciagniecia.opisTekstowy += '<p>' + '<h5>'+napisNaglowek+ '</h5><br>'+ napisWartosc +'<br>' + '</p>';
+        //         })
+        //     }
+        // }
         
         //wyciąganie opisu z listą danych technicznych
-        let rozwiniete = false; // Zmienna kontrolująca stan rozwinięcia
+        // let rozwiniete = false; // Zmienna kontrolująca stan rozwinięcia
     
-        if (document.querySelectorAll(doRozwiniecia).length > 0) {
-            document.querySelector(doRozwiniecia).scrollIntoView(); // Płynne przewinięcie ekranu do elementu
-            setTimeout(() => {
-                document.querySelectorAll(doRozwiniecia).forEach((el,index) => {
-                    if (el.offsetParent !== null) { // Sprawdzamy, czy element jest widoczny
-                        setTimeout(() => {
-                            el.click();
-                             if (index === document.querySelectorAll(doRozwiniecia).length - 1) {
-                                rozwiniete = true;
-                                console.log('Wszystkie elementy kliknięte, rozwiniete = true');
-                            }
+        // if (document.querySelectorAll(doRozwiniecia).length > 0) {
+        //     document.querySelector(doRozwiniecia).scrollIntoView(); // Płynne przewinięcie ekranu do elementu
+        //     setTimeout(() => {
+        //         document.querySelectorAll(doRozwiniecia).forEach((el,index) => {
+        //             if (el.offsetParent !== null) { // Sprawdzamy, czy element jest widoczny
+        //                 setTimeout(() => {
+        //                     el.click();
+        //                      if (index === document.querySelectorAll(doRozwiniecia).length - 1) {
+        //                         rozwiniete = true;
+        //                         console.log('Wszystkie elementy kliknięte, rozwiniete = true');
+        //                     }
     
-                        }, 1000 * index); // Kliknięcie po 1 sekundzie
-                    }
-                });
-            }, 2000); // Kliknięcie po 1 sekundzie
-        }
+        //                 }, 1000 * index); // Kliknięcie po 1 sekundzie
+        //             }
+        //         });
+        //     }, 2000); // Kliknięcie po 1 sekundzie
+        // }
     
-        let juzWykonano = false;
-        setInterval(()=>{
-            if(rozwiniete && !juzWykonano){
-                if(opisListaZDanymiSelektor1Wiersza != ''){
-                    if(document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).length > 0){
-                        daneDoWyciagniecia.opisListaZDanymi += '<h4><strong>Dane techniczne:</strong></h4><table style="width:100%;"><tbody style="width:100%;">';
-                        document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).forEach((el)=>{
-                            console.log('poszloSrodek');
-                            let t = el.querySelector(opisListaZDanymiSelektor1Naglowka);
-                            let tt = el.querySelector(opisListaZDanymiSelektor1Wartosci);
+        // let juzWykonano = false;
+        // setInterval(()=>{
+        //     if(rozwiniete && !juzWykonano){
+        //         if(opisListaZDanymiSelektor1Wiersza != ''){
+        //             if(document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).length > 0){
+        //                 daneDoWyciagniecia.opisListaZDanymi += '<h4><strong>Dane techniczne:</strong></h4><table style="width:100%;"><tbody style="width:100%;">';
+        //                 document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).forEach((el)=>{
+        //                     console.log('poszloSrodek');
+        //                     let t = el.querySelector(opisListaZDanymiSelektor1Naglowka);
+        //                     let tt = el.querySelector(opisListaZDanymiSelektor1Wartosci);
                 
-                            // if (el.parentNode.querySelectorAll('p:nth-child(2)').length > 0) {
-                            //     tt = el.parentNode.querySelector('p:nth-child(2)').innerText;
-                            // } else {
-                            //     tt = el.parentNode.querySelector('p:nth-child(1)').innerText;
-                            // }
+        //                     // if (el.parentNode.querySelectorAll('p:nth-child(2)').length > 0) {
+        //                     //     tt = el.parentNode.querySelector('p:nth-child(2)').innerText;
+        //                     // } else {
+        //                     //     tt = el.parentNode.querySelector('p:nth-child(1)').innerText;
+        //                     // }
                 
-                            //t = t.split('$');
+        //                     //t = t.split('$');
                 
-                                daneDoWyciagniecia.opisListaZDanymi += '<tr><td style="font-weight:600;vertical-align: top;padding-bottom: 6px;">' + t.innerText + '</td><td style="padding-bottom:6px;">' + tt.innerText + '</td></tr>';
+        //                         daneDoWyciagniecia.opisListaZDanymi += '<tr><td style="font-weight:600;vertical-align: top;padding-bottom: 6px;">' + t.innerText + '</td><td style="padding-bottom:6px;">' + tt.innerText + '</td></tr>';
     
-                        })
-                        daneDoWyciagniecia.opisListaZDanymi += '</table></tbody>';
-                    }
-                }
+        //                 })
+        //                 daneDoWyciagniecia.opisListaZDanymi += '</table></tbody>';
+        //             }
+        //         }
                 
                 
                 
-                //TWORZENIE GOTOWEGO OPISU
+        //         //TWORZENIE GOTOWEGO OPISU
                 
                 
                 
-                gotowyOpis += daneDoWyciagniecia.tytul + '\n\n';
-                if(coChceszWyciagnac.cena === 1){
-                    gotowyOpis += daneDoWyciagniecia.cena + '\n';
-                }
-                if(coChceszWyciagnac.ean === 1){
-                    gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
-                }
-                if(coChceszWyciagnac.opis === 1){
-                    gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
-                    gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
-                }
+        //         gotowyOpis += daneDoWyciagniecia.tytul + '\n\n';
+        //         if(coChceszWyciagnac.cena === 1){
+        //             gotowyOpis += daneDoWyciagniecia.cena + '\n';
+        //         }
+        //         if(coChceszWyciagnac.ean === 1){
+        //             gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
+        //         }
+        //         if(coChceszWyciagnac.opis === 1){
+        //             gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
+        //             gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
+        //         }
                
-                if (ostrzezenia != '') {
-                    gotowyOpis += 'UWAGA!!!!' + '\n';
-                    gotowyOpis += ostrzezenia + '\n';
-                }
-                nazwaPoFormacie = daneDoWyciagniecia.tytul.toLowerCase();
+        //         if (ostrzezenia != '') {
+        //             gotowyOpis += 'UWAGA!!!!' + '\n';
+        //             gotowyOpis += ostrzezenia + '\n';
+        //         }
+        //         nazwaPoFormacie = daneDoWyciagniecia.tytul.toLowerCase();
             
-                nazwaPoFormacie = nazwaPoFormacie.replace(/[^0-9a-zA-Z]+/g, "-");
+        //         nazwaPoFormacie = nazwaPoFormacie.replace(/[^0-9a-zA-Z]+/g, "-");
             
-                if (!/^[a-zA-Z]/.test(nazwaPoFormacie.charAt(0))) {
-                    nazwaPoFormacie = nazwaPoFormacie.slice(1);
-                }
+        //         if (!/^[a-zA-Z]/.test(nazwaPoFormacie.charAt(0))) {
+        //             nazwaPoFormacie = nazwaPoFormacie.slice(1);
+        //         }
             
-                maintext += gotowyOpis;
-                juzWykonano = true;
-            }
-        })
+        //         maintext += gotowyOpis;
+        //         juzWykonano = true;
+        //     }
+        // })
 
 
         function formatTitleForFilename(title) {
@@ -398,6 +398,7 @@ async function opis(coChceszWyciagnac) {
         
         console.log(formattedTitle)+'-'+document.querySelector('span[data-testid="product-id-label"]').innerText;
         nazwaPoFormacie = formattedTitle+'-'+document.querySelector('span[data-testid="product-id-label"]').innerText;
+
     } 
 
 
