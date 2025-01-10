@@ -1795,8 +1795,9 @@ async function downloadImages(nazwaZdjec) {
             })
     } else if (window.location.href.includes('www.miele.pl')) {
         limg = document.querySelectorAll('.hls-product-gallery__wrapper img');
-    } else if (window.location.href.includes('https://home.liebherr.com')) {
-        limg = document.querySelectorAll('.item .icons.lightbox');
+    } else if (window.location.href.includes('https://www.liebherr.com')) {
+        limg = document.querySelectorAll('section.content-container-padding .slick-slider.slick-initialized > .slick-list > .slick-track > .slick-slide picture > img
+');
     } else if (window.location.href.includes('https://ciarko.com')) {
         limg = document.querySelectorAll('.photoswipe-item a.rollover.dt-pswp-item.pspw-wrap-ready.this-ready:not(.vc_box_border_grey)');
     } else if (window.location.href.includes('https://www.elica.com')) {
@@ -1818,9 +1819,9 @@ async function downloadImages(nazwaZdjec) {
 
     let imgl = limg.length;
     for (let i = 0; i < imgl; i++) {
-        if (window.location.href.includes('https://home.liebherr.com') || window.location.href.includes('https://www.elica.com') || window.location.href.includes('https://www.aeg.pl') || window.location.href.includes('https://ciarko.com')) {
+        if (window.location.href.includes('https://www.elica.com') || window.location.href.includes('https://www.aeg.pl') || window.location.href.includes('https://ciarko.com')) {
             tablicaZdjec.push(limg[i].getAttribute('href'));
-        } else if(!window.location.href.includes('www.bosch-home.pl')){
+        } else if(!window.location.href.includes('www.bosch-home.pl') || window.location.href.includes('https://www.liebherr.com')){
             tablicaZdjec.push(limg[i].getAttribute('src'));
         }
     }
