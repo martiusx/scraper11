@@ -712,6 +712,46 @@ async function opis(coChceszWyciagnac) {
         // nazwaPoFormacie = nazwaPoFormacie.split('.').join('');
         // maintext += gotowyOpis;
 
+
+        //NOWA WERSJA
+        let symbol='CBNsdc 573i';
+        let linia='Plus';
+        let technologie='SmartDevice, SmartSteel door';
+        let endhtml='';
+
+        let pdetails=document.querySelectorAll('.details .data_table_module .data_table_module__row');
+        endhtml+='<table style="width:100%;"><tbody style="width:100%;">';
+        for(let i=0;i<pdetails.length;i++) {
+            endhtml+='<tr style="width:100%;"><td style="width:50%;padding-right:10px;">'+pdetails[i].querySelector('.data_table_module__cell:nth-child(1)').innerText+'</td><td style="width:50%;font-weight:600;">'+pdetails[i].querySelector('.data_table_module__cell:nth-child(2)').innerText+'</td></tr>';
+        }
+        endhtml+='</tbody></table>';
+        let acordionitem=document.querySelectorAll('patternlib-accordion-item[label="Dane techniczne"] .modulespacer');
+        for(let i=0;i<acordionitem.length;i++) {
+            endhtml+='<h4>XXX</h4>';
+            endhtml+='<table style="width:100%;"><tbody style="width:100%;">';
+            let atresc=acordionitem[i].querySelectorAll('.lh-table-module.show-table-borders > tbody > tr');
+            for(let j=0;j<atresc.length;j++) {
+                if(atresc[j].querySelector('td:nth-child(2)').innerHTML.replace('<div style="padding-left: 0px;">','').replace('<div style="padding-left: 10px;">','').replace('<div style="padding-left: 12px;">','').replace('<div style="padding-left: 12px;">','').replace('</div>','').trim()!='—' && atresc[j].querySelector('td:nth-child(2)').innerHTML.replace('<div style="padding-left: 0px;">','').replace('<div style="padding-left: 12px;">','').replace('<div style="padding-left: 10px;">','').replace('<div style="padding-left: 12px;">','').replace('</div>','').replace('</div>','').trim()!='0') {
+                    let atrow='';
+                    if(atresc[j].querySelector('td:nth-child(2)').innerHTML.replace('\n','').replace('✔','').length==0) {
+                        atrow='<tr style="width:100%;"><td style="width:50%;padding-right:10px;">'+atresc[j].querySelector('td:nth-child(1)').innerText.trim()+'</td><td style="font-weight:600;">TAK</td></tr>';
+                    } else {
+                        console.log(111111);
+                        console.log(atresc[j].querySelector('td:nth-child(1)'));
+        console.log(atresc[j].querySelector('td:nth-child(2)'));
+        console.log(atresc[j].querySelector('td:nth-child(1)').innerHTML);
+        console.log(atresc[j].querySelector('td:nth-child(2)').innerHTML);                
+                        atrow='<tr style="width:100%;"><td style="width:50%;padding-right:10px;">'+atresc[j].querySelector('td:nth-child(1)').innerHTML.replace('<div style="padding-left: 0px;">','').replace('</div>','').trim()+'</td><td style="font-weight:600;">'+atresc[j].querySelector('td:nth-child(2)').innerHTML.replace('<div style="padding-left: 0px;">','').replace('</div>','').trim().replace(/(\r\n\t|\n|\r\t)/g,' ')+'</td></tr>';
+                    }
+                    endhtml+=atrow;
+                }
+                
+            }
+            endhtml+='</tbody></table>';
+        }
+        console.log(endhtml);
+        maintext +=endhtml;
+
         nazwaPoFormacie = document.querySelector('.items-start h1.mb-2').innerText.replace(/\s+/g, "-").toLowerCase();
     }
 
