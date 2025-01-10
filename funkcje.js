@@ -1821,6 +1821,7 @@ async function downloadImages(nazwaZdjec) {
         if (window.location.href.includes('https://www.elica.com') || window.location.href.includes('https://www.aeg.pl') || window.location.href.includes('https://ciarko.com')) {
             tablicaZdjec.push(limg[i].getAttribute('href'));
         } else if(!window.location.href.includes('www.bosch-home.pl') || window.location.href.includes('https://www.liebherr.com')){
+            console.log(tablicaZdjec);
             tablicaZdjec.push(limg[i].getAttribute('src'));
         }
     }
