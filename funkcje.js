@@ -549,170 +549,170 @@ async function opis(coChceszWyciagnac) {
     
     
     else if (window.location.href.includes('https://www.liebherr.com')) {
-        const daneDoWyciagniecia = {
-            cena: '',
-            ean: '',
-            tytul: '',
-            opisTekstowy: '',
-            opisListaZDanymi: ''
-        };
-        let typ = '';
-        let model = '';
-        let gotowyOpis = '';
+        // const daneDoWyciagniecia = {
+        //     cena: '',
+        //     ean: '',
+        //     tytul: '',
+        //     opisTekstowy: '',
+        //     opisListaZDanymi: ''
+        // };
+        // let typ = '';
+        // let model = '';
+        // let gotowyOpis = '';
         
-        //Dane to uzupełnienia
-        let cenaSelektor = '.shop .shop-price__current-price';
-        let eanSelektor = '';
-        let eanSelektorScriptJson = 'script[type="application/ld+json"]';
-        let marka = 'Liebherr';
-        let modelSelektor = '';
-        let typSelektor = '';
-        let opisTekstowySelektorBezListy = '';
-        let opisTekstowySelektorzLista = '';
-        let opisTekstowySelektorzListaNaglowek = '';
-        let opisTekstowySelektorzListaWartosc = '';
+        // //Dane to uzupełnienia
+        // let cenaSelektor = '.shop .shop-price__current-price';
+        // let eanSelektor = '';
+        // let eanSelektorScriptJson = 'script[type="application/ld+json"]';
+        // let marka = 'Liebherr';
+        // let modelSelektor = '';
+        // let typSelektor = '';
+        // let opisTekstowySelektorBezListy = '';
+        // let opisTekstowySelektorzLista = '';
+        // let opisTekstowySelektorzListaNaglowek = '';
+        // let opisTekstowySelektorzListaWartosc = '';
         
-        let ostrzezenia = '';
-        let opisListaZDanymiSelektor1Wiersza = '.details .data_table_module .data_table_module__row';    
-        let opisListaZDanymiSelektor1Naglowka = '';
-        let opisListaZDanymiSelektor1Wartosci = '';
+        // let ostrzezenia = '';
+        // let opisListaZDanymiSelektor1Wiersza = '.details .data_table_module .data_table_module__row';    
+        // let opisListaZDanymiSelektor1Naglowka = '';
+        // let opisListaZDanymiSelektor1Wartosci = '';
         
-        //wyciąganie EANU ze skryptu json
-        if(eanSelektorScriptJson != ''){
-            let scriptElement = document.querySelector(eanSelektorScriptJson);
-            let productData = JSON.parse(scriptElement.textContent);
-            daneDoWyciagniecia.ean = productData.gtin13;
-        }
-        //wyciąganie Eanu
-        if(eanSelektor != '' && eanSelektorScriptJson == ''){
-            if(document.querySelectorAll(eanSelektor).length>0){
-                daneDoWyciagniecia.ean = document.querySelector(eanSelektor).innerText;
-            }else{
-                daneDoWyciagniecia.ean = 'BRAK WYCIĄGNIĘTEGO EANU';
-            }
-        }else if(eanSelektorScriptJson == ''){
-            daneDoWyciagniecia.ean = 'BRAK WYCIĄGNIĘTEGO EANU';
-        }
+        // //wyciąganie EANU ze skryptu json
+        // if(eanSelektorScriptJson != ''){
+        //     let scriptElement = document.querySelector(eanSelektorScriptJson);
+        //     let productData = JSON.parse(scriptElement.textContent);
+        //     daneDoWyciagniecia.ean = productData.gtin13;
+        // }
+        // //wyciąganie Eanu
+        // if(eanSelektor != '' && eanSelektorScriptJson == ''){
+        //     if(document.querySelectorAll(eanSelektor).length>0){
+        //         daneDoWyciagniecia.ean = document.querySelector(eanSelektor).innerText;
+        //     }else{
+        //         daneDoWyciagniecia.ean = 'BRAK WYCIĄGNIĘTEGO EANU';
+        //     }
+        // }else if(eanSelektorScriptJson == ''){
+        //     daneDoWyciagniecia.ean = 'BRAK WYCIĄGNIĘTEGO EANU';
+        // }
         
-        //wyciąganie ceny
-        if(cenaSelektor != ''){
-            if(document.querySelectorAll(cenaSelektor).length > 0){
-                daneDoWyciagniecia.cena = document.querySelector(cenaSelektor).innerText;
-            }else{
-                daneDoWyciagniecia.cena = 'BRAK WYCIĄGNIĘTEJ CENY';
-            }
-        }else{
-            daneDoWyciagniecia.cena = 'BRAK WYCIĄGNIĘTEJ CENY';
-        }
-        //tworzenie tutułu
-        if(typSelektor != ''){
-            if(document.querySelectorAll(typSelektor).length >0){
-                let typArray = document.querySelectorAll(typSelektor);
-                typArray.forEach((el)=>{
-                    let kategoria = el.innerText;
+        // //wyciąganie ceny
+        // if(cenaSelektor != ''){
+        //     if(document.querySelectorAll(cenaSelektor).length > 0){
+        //         daneDoWyciagniecia.cena = document.querySelector(cenaSelektor).innerText;
+        //     }else{
+        //         daneDoWyciagniecia.cena = 'BRAK WYCIĄGNIĘTEJ CENY';
+        //     }
+        // }else{
+        //     daneDoWyciagniecia.cena = 'BRAK WYCIĄGNIĘTEJ CENY';
+        // }
+        // //tworzenie tutułu
+        // if(typSelektor != ''){
+        //     if(document.querySelectorAll(typSelektor).length >0){
+        //         let typArray = document.querySelectorAll(typSelektor);
+        //         typArray.forEach((el)=>{
+        //             let kategoria = el.innerText;
         
-                    if(kategoria == 'Okapy'){
-                        typ = 'Okap';
-                    }else if(kategoria == 'Płyty z wyciągiem'){
-                        typ = 'Płyta z wyciągiem';
-                    }
-                })
-            }
-        }
+        //             if(kategoria == 'Okapy'){
+        //                 typ = 'Okap';
+        //             }else if(kategoria == 'Płyty z wyciągiem'){
+        //                 typ = 'Płyta z wyciągiem';
+        //             }
+        //         })
+        //     }
+        // }
         
-        if(document.querySelector('.product_topinfo_module h1 em').innerText.toLowerCase().split('hłodziarko').length>1) {
-            daneDoWyciagniecia.tytul+='<h3>Chłodziarko-zamrażarka '+'[SYMBOL]'+' '+'[LINIA]'+' '+document.querySelector('.product_topinfo_module h1 em').innerText.split('zamrażarka')[1]+'</h3>'+'<br><span>'+'[TECHNOLOGIE]'+'</span>';
-        } else
-        if(document.querySelector('.product_topinfo_module h1 em').innerText.toLowerCase().split('hłodziarka').length>1) {
-            daneDoWyciagniecia.tytul+='<h3>Chłodziarka '+'[SYMBOL]'+' '+'[LINIA]'+' '+document.querySelector('.product_topinfo_module h1 em').innerText.split('hłodziarka')[1]+'</h3>'+'<br><span>'+'[TECHNOLOGIE]'+'</span>';
-        } else
-        if(document.querySelector('.product_topinfo_module h1 em').innerText.toLowerCase().split('amrażarka').length>1) {
-            daneDoWyciagniecia.tytul+='<h3>Zamrażarka '+'[SYMBOL]'+' '+'[LINIA]'+' '+document.querySelector('.product_topinfo_module h1 em').innerText.split('amrażarka')[1]+'</h3>'+'<br><span>'+'[TECHNOLOGIE]'+'</span>';
-        }
+        // if(document.querySelector('.product_topinfo_module h1 em').innerText.toLowerCase().split('hłodziarko').length>1) {
+        //     daneDoWyciagniecia.tytul+='<h3>Chłodziarko-zamrażarka '+'[SYMBOL]'+' '+'[LINIA]'+' '+document.querySelector('.product_topinfo_module h1 em').innerText.split('zamrażarka')[1]+'</h3>'+'<br><span>'+'[TECHNOLOGIE]'+'</span>';
+        // } else
+        // if(document.querySelector('.product_topinfo_module h1 em').innerText.toLowerCase().split('hłodziarka').length>1) {
+        //     daneDoWyciagniecia.tytul+='<h3>Chłodziarka '+'[SYMBOL]'+' '+'[LINIA]'+' '+document.querySelector('.product_topinfo_module h1 em').innerText.split('hłodziarka')[1]+'</h3>'+'<br><span>'+'[TECHNOLOGIE]'+'</span>';
+        // } else
+        // if(document.querySelector('.product_topinfo_module h1 em').innerText.toLowerCase().split('amrażarka').length>1) {
+        //     daneDoWyciagniecia.tytul+='<h3>Zamrażarka '+'[SYMBOL]'+' '+'[LINIA]'+' '+document.querySelector('.product_topinfo_module h1 em').innerText.split('amrażarka')[1]+'</h3>'+'<br><span>'+'[TECHNOLOGIE]'+'</span>';
+        // }
         
         
-        //wyciąganie opisu tekstowego
-        if(opisTekstowySelektorBezListy != ''){
-            if(document.querySelectorAll(opisTekstowySelektorBezListy).length > 0){
-                daneDoWyciagniecia.opisTekstowy = '<p>'+ document.querySelector(opisTekstowySelektorBezListy).innerText + '</p>';
-            }
-        }
+        // //wyciąganie opisu tekstowego
+        // if(opisTekstowySelektorBezListy != ''){
+        //     if(document.querySelectorAll(opisTekstowySelektorBezListy).length > 0){
+        //         daneDoWyciagniecia.opisTekstowy = '<p>'+ document.querySelector(opisTekstowySelektorBezListy).innerText + '</p>';
+        //     }
+        // }
         
-        //wyciąganie opisu tekstowego z listy
-        if(opisTekstowySelektorzLista != ''){
-            if(document.querySelectorAll(opisTekstowySelektorzLista).length > 0){
-                document.querySelectorAll(opisTekstowySelektorzLista).forEach((el)=>{
-                    let napisNaglowek = '';
-                    let napisWartosc = '';
-                    if(el.querySelectorAll(opisTekstowySelektorzListaNaglowek).length > 0){
-                         napisNaglowek = el.querySelector(opisTekstowySelektorzListaNaglowek).innerText;
-                    }
-                    if(el.querySelectorAll(opisTekstowySelektorzListaWartosc).length > 0){
-                         napisWartosc = el.querySelector(opisTekstowySelektorzListaWartosc).innerText;
-                    }
-                    daneDoWyciagniecia.opisTekstowy += '<p>' + '<h5>'+napisNaglowek+ '</h5><br>'+ napisWartosc +'<br>' + '</p>';
-                })
-            }
-        }
+        // //wyciąganie opisu tekstowego z listy
+        // if(opisTekstowySelektorzLista != ''){
+        //     if(document.querySelectorAll(opisTekstowySelektorzLista).length > 0){
+        //         document.querySelectorAll(opisTekstowySelektorzLista).forEach((el)=>{
+        //             let napisNaglowek = '';
+        //             let napisWartosc = '';
+        //             if(el.querySelectorAll(opisTekstowySelektorzListaNaglowek).length > 0){
+        //                  napisNaglowek = el.querySelector(opisTekstowySelektorzListaNaglowek).innerText;
+        //             }
+        //             if(el.querySelectorAll(opisTekstowySelektorzListaWartosc).length > 0){
+        //                  napisWartosc = el.querySelector(opisTekstowySelektorzListaWartosc).innerText;
+        //             }
+        //             daneDoWyciagniecia.opisTekstowy += '<p>' + '<h5>'+napisNaglowek+ '</h5><br>'+ napisWartosc +'<br>' + '</p>';
+        //         })
+        //     }
+        // }
         
-        //wyciąganie opisu z listą danych technicznych
-        if(opisListaZDanymiSelektor1Wiersza != ''){
-            if(document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).length > 0){
-                let pdetails=document.querySelectorAll('.details .data_table_module .data_table_module__row');
-                daneDoWyciagniecia.opisListaZDanymi+='<table style="width:100%;"><tbody style="width:100%;">';
-                for(let i=0;i<pdetails.length;i++) {
-                    daneDoWyciagniecia.opisListaZDanymi+='<tr style="width:100%;"><td style="width:50%;padding-right:10px;">'+pdetails[i].querySelector('.data_table_module__cell:nth-child(1)').innerText+'</td><td style="width:50%;font-weight:600;">'+pdetails[i].querySelector('.data_table_module__cell:nth-child(2)').innerText+'</td></tr>';
-                }
-                daneDoWyciagniecia.opisListaZDanymi+='</tbody></table>';
-                let acordionitem=document.querySelectorAll('#accordion2 .accordionItem');
-                for(let i=0;i<acordionitem.length;i++) {
-                    let atitle=acordionitem[i].querySelector('.slideLink h4 a .text').innerText;
-                    daneDoWyciagniecia.opisListaZDanymi+='<h4 style="font-weight:600;">'+atitle+'</h4><table style="width:100%;"><tbody style="width:100%;">';
-                    let atresc=acordionitem[i].querySelectorAll('.technical_data_module tbody tr');
-                    for(let j=0;j<atresc.length;j++) {
-                        if(atresc[j].querySelector('td').innerText.trim()!='—' && atresc[j].querySelector('td').innerText.trim()!='0') {
-                            let atrow='';
-                            if(atresc[j].querySelector('td').innerHTML.replace('\n','').replace('✔','').length==0) {
-                                atrow='<tr style="width:100%;"><td style="width:50%;padding-right:10px;">'+atresc[j].querySelector('th').innerText.trim()+'</td><td style="font-weight:600;">TAK</td></tr>';
-                            } else {
-                                atrow='<tr style="width:100%;"><td style="width:50%;padding-right:10px;">'+atresc[j].querySelector('th').innerText.trim()+'</td><td style="font-weight:600;">'+atresc[j].querySelector('td').innerText.trim().replace(/(\r\n\t|\n|\r\t)/g,' ')+'</td></tr>';
-                            }
-                            daneDoWyciagniecia.opisListaZDanymi+=atrow;
-                        }
+        // //wyciąganie opisu z listą danych technicznych
+        // if(opisListaZDanymiSelektor1Wiersza != ''){
+        //     if(document.querySelectorAll(opisListaZDanymiSelektor1Wiersza).length > 0){
+        //         let pdetails=document.querySelectorAll('.details .data_table_module .data_table_module__row');
+        //         daneDoWyciagniecia.opisListaZDanymi+='<table style="width:100%;"><tbody style="width:100%;">';
+        //         for(let i=0;i<pdetails.length;i++) {
+        //             daneDoWyciagniecia.opisListaZDanymi+='<tr style="width:100%;"><td style="width:50%;padding-right:10px;">'+pdetails[i].querySelector('.data_table_module__cell:nth-child(1)').innerText+'</td><td style="width:50%;font-weight:600;">'+pdetails[i].querySelector('.data_table_module__cell:nth-child(2)').innerText+'</td></tr>';
+        //         }
+        //         daneDoWyciagniecia.opisListaZDanymi+='</tbody></table>';
+        //         let acordionitem=document.querySelectorAll('#accordion2 .accordionItem');
+        //         for(let i=0;i<acordionitem.length;i++) {
+        //             let atitle=acordionitem[i].querySelector('.slideLink h4 a .text').innerText;
+        //             daneDoWyciagniecia.opisListaZDanymi+='<h4 style="font-weight:600;">'+atitle+'</h4><table style="width:100%;"><tbody style="width:100%;">';
+        //             let atresc=acordionitem[i].querySelectorAll('.technical_data_module tbody tr');
+        //             for(let j=0;j<atresc.length;j++) {
+        //                 if(atresc[j].querySelector('td').innerText.trim()!='—' && atresc[j].querySelector('td').innerText.trim()!='0') {
+        //                     let atrow='';
+        //                     if(atresc[j].querySelector('td').innerHTML.replace('\n','').replace('✔','').length==0) {
+        //                         atrow='<tr style="width:100%;"><td style="width:50%;padding-right:10px;">'+atresc[j].querySelector('th').innerText.trim()+'</td><td style="font-weight:600;">TAK</td></tr>';
+        //                     } else {
+        //                         atrow='<tr style="width:100%;"><td style="width:50%;padding-right:10px;">'+atresc[j].querySelector('th').innerText.trim()+'</td><td style="font-weight:600;">'+atresc[j].querySelector('td').innerText.trim().replace(/(\r\n\t|\n|\r\t)/g,' ')+'</td></tr>';
+        //                     }
+        //                     daneDoWyciagniecia.opisListaZDanymi+=atrow;
+        //                 }
                         
-                    }
-                    daneDoWyciagniecia.opisListaZDanymi+='</tbody></table>';
-                }
-            }
-        }
+        //             }
+        //             daneDoWyciagniecia.opisListaZDanymi+='</tbody></table>';
+        //         }
+        //     }
+        // }
         
         
         
-        //TWORZENIE GOTOWEGO OPISU
+        // //TWORZENIE GOTOWEGO OPISU
         
         
         
-        gotowyOpis += daneDoWyciagniecia.tytul + '\n\n';
-        if(coChceszWyciagnac.cena === 1){
-            gotowyOpis += daneDoWyciagniecia.cena + '\n';
-        }
-        if(coChceszWyciagnac.ean === 1){
-            gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
-        }
-        if(coChceszWyciagnac.opis === 1){
-            gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
-            gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
-        }
+        // gotowyOpis += daneDoWyciagniecia.tytul + '\n\n';
+        // if(coChceszWyciagnac.cena === 1){
+        //     gotowyOpis += daneDoWyciagniecia.cena + '\n';
+        // }
+        // if(coChceszWyciagnac.ean === 1){
+        //     gotowyOpis += daneDoWyciagniecia.ean + '\n\n';
+        // }
+        // if(coChceszWyciagnac.opis === 1){
+        //     gotowyOpis += daneDoWyciagniecia.opisTekstowy + '\n\n';
+        //     gotowyOpis += daneDoWyciagniecia.opisListaZDanymi + '\n\n';
+        // }
        
-        if (ostrzezenia != '') {
-            gotowyOpis += 'UWAGA!!!!' + '\n';
-            gotowyOpis += ostrzezenia + '\n';
-        }
-        nazwaPoFormacie = daneDoWyciagniecia.tytul.replace(/ /g, "-").toLowerCase();
-        nazwaPoFormacie = nazwaPoFormacie.split('.').join('');
-        maintext += gotowyOpis;
+        // if (ostrzezenia != '') {
+        //     gotowyOpis += 'UWAGA!!!!' + '\n';
+        //     gotowyOpis += ostrzezenia + '\n';
+        // }
+        // nazwaPoFormacie = daneDoWyciagniecia.tytul.replace(/ /g, "-").toLowerCase();
+        // nazwaPoFormacie = nazwaPoFormacie.split('.').join('');
+        // maintext += gotowyOpis;
 
-        nazwaPoFormacie = document.querySelector('.items-start h1.mb-2').innerText.replace(/\s+/g, "-");
+        nazwaPoFormacie = document.querySelector('.items-start h1.mb-2').innerText.replace(/\s+/g, "-").toLowerCase();
     }
 
 
