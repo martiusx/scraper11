@@ -548,7 +548,7 @@ async function opis(coChceszWyciagnac) {
     
     
     
-    else if (window.location.href.includes('https://home.liebherr.com')) {
+    else if (window.location.href.includes('https://www.liebherr.com')) {
         const daneDoWyciagniecia = {
             cena: '',
             ean: '',
@@ -712,7 +712,7 @@ async function opis(coChceszWyciagnac) {
         nazwaPoFormacie = nazwaPoFormacie.split('.').join('');
         maintext += gotowyOpis;
 
-        nazwaPoFormacie = document.querySelector('.shop h1').innerText.replace(/\s+/g, "-");
+        nazwaPoFormacie = document.querySelector('.items-start h1.mb-2').innerText.replace(/\s+/g, "-");
     }
 
 
